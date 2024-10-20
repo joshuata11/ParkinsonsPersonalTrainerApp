@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:visibility="visible">
 
     <!-- views on the left side -->
     <TextView
@@ -92,4 +93,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/Percent"
         app:layout_constraintStart_toStartOf="@+id/BaseAmount"
         app:layout_constraintTop_toTopOf="@+id/Percent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="148dp"
+        android:text="Click Me!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TotalValue" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
