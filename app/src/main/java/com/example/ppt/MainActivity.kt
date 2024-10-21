@@ -1,9 +1,12 @@
 package com.example.ppt
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
@@ -14,13 +17,15 @@ import androidx.core.view.WindowInsetsCompat
 
 
 private  const val TAG = "MainActivity"
-private const val INITAL_TIP = 15
+private const val INITAL_TIP = 20
 class MainActivity : AppCompatActivity() {
     private lateinit var baseAmount: EditText
     private lateinit var seekBar: SeekBar
     private lateinit var tipPercent: TextView
     private lateinit var tipAmount: TextView
     private lateinit var total: TextView
+    private lateinit var button: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         tipPercent = findViewById(R.id.Percent)
         tipAmount = findViewById(R.id.tipTotal)
         total = findViewById(R.id.TotalValue)
+        button = findViewById(R.id.button)
+
 
         seekBar.progress = INITAL_TIP
         tipPercent.text = "$INITAL_TIP%"
@@ -38,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 Log.i(TAG, "onProgressChanges $progress")
                 tipPercent.text = "$progress%"
-                    computeTipandTotal()
+                computeTipandTotal()
 
             }
 
@@ -63,7 +70,13 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+        button.setOnClickListener(View.OnClickListener
+        {
+            val intent = Intent(this, SecondActivity::class.java)
+            intent.putExtra("Total", total.text)
+            startActivity(intent)
 
+        })
 
 
 
