@@ -8,112 +8,135 @@
     tools:context=".MainActivity"
     tools:visibility="visible">
 
-    <!-- views on the left side -->
-    <TextView
-        android:id="@+id/BaseLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
-        android:text="Base"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+<!--    /*-->
+<!--    &lt;!&ndash; views on the left side &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/BaseLabel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="48dp"-->
+<!--        android:text="Base"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/Percent"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/BaseLabel"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/BaseLabel"-->
+<!--        tools:text="20%" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/Tip"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:text="Tip"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/Percent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/Percent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/Total"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:text="Total"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/Tip"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/Tip" />-->
+
+<!--    &lt;!&ndash; views on the right side &ndash;&gt;-->
+<!--    <EditText-->
+<!--        android:id="@+id/BaseAmount"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="14dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Bill Amount"-->
+<!--        android:inputType="numberDecimal"-->
+<!--        android:textSize="24sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/BaseLabel"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/BaseLabel"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/BaseLabel" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tipTotal"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/Tip"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/SeekBarTip"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/Tip"-->
+<!--        tools:text="21.54" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/TotalValue"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/Total"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/tipTotal"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/Total"-->
+<!--        tools:text="121.62" />-->
+
+<!--    <SeekBar-->
+<!--        android:id="@+id/SeekBarTip"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="30"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/Percent"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/BaseAmount"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/Percent" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="84dp"-->
+<!--        android:layout_marginTop="148dp"-->
+<!--        android:text="Click to find out tip!"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/TotalValue" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/TESTVIEW"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="72dp"-->
+<!--        android:layout_marginTop="60dp"-->
+<!--        android:text="TextView"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/TotalValue" />-->
+
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/Percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/BaseLabel"
-        app:layout_constraintTop_toBottomOf="@+id/BaseLabel"
-        tools:text="20%" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/Tip"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Tip"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/Percent"
-        app:layout_constraintTop_toBottomOf="@+id/Percent" />
-
-    <TextView
-        android:id="@+id/Total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Total"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toEndOf="@+id/Tip"
-        app:layout_constraintTop_toBottomOf="@+id/Tip" />
-
-    <!-- views on the right side -->
-    <EditText
-        android:id="@+id/BaseAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:ems="10"
-        android:hint="Bill Amount"
-        android:inputType="numberDecimal"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/BaseLabel"
-        app:layout_constraintStart_toEndOf="@+id/BaseLabel"
-        app:layout_constraintTop_toTopOf="@+id/BaseLabel" />
-
-    <TextView
-        android:id="@+id/tipTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/Tip"
-        app:layout_constraintStart_toStartOf="@+id/SeekBarTip"
-        app:layout_constraintTop_toTopOf="@+id/Tip"
-        tools:text="21.54" />
-
-    <TextView
-        android:id="@+id/TotalValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="@+id/Total"
-        app:layout_constraintStart_toStartOf="@+id/tipTotal"
-        app:layout_constraintTop_toTopOf="@+id/Total"
-        tools:text="121.62" />
-
-    <SeekBar
-        android:id="@+id/SeekBarTip"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="false"
-        android:max="30"
-        app:layout_constraintBottom_toBottomOf="@+id/Percent"
-        app:layout_constraintStart_toStartOf="@+id/BaseAmount"
-        app:layout_constraintTop_toTopOf="@+id/Percent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="148dp"
-        android:text="Click to find out tip!"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TotalValue" />
+        app:menu="@menu/bottom_nav">
 
-    <TextView
-        android:id="@+id/TESTVIEW"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="60dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TotalValue" />
-
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

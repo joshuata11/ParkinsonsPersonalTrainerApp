@@ -14,32 +14,61 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import com.example.ppt.databinding.ActivityMainBinding
 
 
 private  const val TAG = "MainActivity"
 private const val INITAL_TIP = 20
 class MainActivity : AppCompatActivity() {
-    private lateinit var baseAmount: EditText
+   /* private lateinit var baseAmount: EditText
     private lateinit var seekBar: SeekBar
     private lateinit var tipPercent: TextView
     private lateinit var tipAmount: TextView
     private lateinit var total: TextView
-    private lateinit var button: Button
+    private lateinit var button: Button*/
+
+    private lateinit var binding: ActivityMainBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        baseAmount = findViewById(R.id.BaseAmount)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        replaceFragment(Home())
+
+
+
+
+
+        binding.bottomNavigationView.setOnItemSelectedListener{
+
+            when(it.itemId){
+
+
+                R.id.home -> replaceFragment(Home())
+                R.id.workout -> replaceFragment(Workout())
+                R.id.settings -> replaceFragment(Settings())
+
+                else -> {
+
+                }
+
+            }
+                true
+
+
+        }
+
+       /* baseAmount = findViewById(R.id.BaseAmount)
         seekBar = findViewById(R.id.SeekBarTip)
         tipPercent = findViewById(R.id.Percent)
         tipAmount = findViewById(R.id.tipTotal)
         total = findViewById(R.id.TotalValue)
-        button = findViewById(R.id.button)
+        button = findViewById(R.id.button)*/
 
 
-        seekBar.progress = INITAL_TIP
+       /* seekBar.progress = INITAL_TIP
         tipPercent.text = "$INITAL_TIP%"
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -76,13 +105,21 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Total", total.text)
             startActivity(intent)
 
-        })
+        })*/
 
 
 
     }
 
-    private fun computeTipandTotal() {
+    private fun replaceFragment(fragment: Fragment){
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_layout,fragment)
+        fragmentTransaction.commit()
+
+    }
+
+    /*private fun computeTipandTotal() {
 
         if (baseAmount.text.isEmpty()){
             tipAmount.text = ""
@@ -99,5 +136,5 @@ class MainActivity : AppCompatActivity() {
         total.text = "%.2f".format(totalA)
 
 
-    }
+    }*/
 }
