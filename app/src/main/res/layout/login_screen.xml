@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:visibility="visible">
+
+    <Button
+        android:id="@+id/Login"
+        android:layout_width="126dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="111dp"
+        android:text="Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Pass"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/Pass"
+        android:layout_width="243dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PassPrompt" />
+
+    <TextView
+        android:id="@+id/PassPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="169dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Password"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/Pass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Name" />
+
+    <TextView
+        android:id="@+id/Logo"
+        android:layout_width="265dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Parkinson's\nPersonal\nTrainer"
+        android:textAlignment="center"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/NamePrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/Name"
+        android:layout_width="243dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="9dp"
+        android:ems="10"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/PassPrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NamePrompt" />
+
+    <TextView
+        android:id="@+id/NamePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="168dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="169dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Username"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Logo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
