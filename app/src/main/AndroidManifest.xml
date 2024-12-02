@@ -23,6 +23,12 @@
             android:exported="false"/>
         <activity
             android:name=".LoginScreen"
+            android:exported="false"/>
+        <activity
+            android:name=".UserSetup"
+            android:exported="false"/>
+        <activity
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
