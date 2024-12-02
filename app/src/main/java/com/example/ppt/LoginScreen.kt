@@ -28,6 +28,7 @@ class LoginScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPref = getSharedPreferences("account_info", MODE_PRIVATE) ?: return
         val editor = sharedPref.edit()
+        var remember = false
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.login_screen)
@@ -37,19 +38,18 @@ class LoginScreen : AppCompatActivity() {
         rem = findViewById<CheckBox>(R.id.Remember)
 
         rem.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                editor.putBoolean("rememberKey",true)
-                editor.apply()
-            } else {
-                editor.putBoolean("rememberKey",false)
-                editor.apply()
-            }
+            remember = isChecked
         }
 
         button.setOnClickListener {
             val UserN = sharedPref.getString("userKey", "")
             val PassW = sharedPref.getString("passKey", "")
             if (user.getText().toString() == UserN  && pass.getText().toString() == PassW) {
+
+                if (remember) {
+                    editor.putBoolean("rememberKey",true)
+                    editor.apply()
+                }
 
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
