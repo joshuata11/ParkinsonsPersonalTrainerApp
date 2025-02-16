@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tipAmount: TextView
     private lateinit var total: TextView
     private lateinit var button: Button*/
+
+    private lateinit var imgbtn: ImageButton
 
     private lateinit var binding: ActivityMainBinding
 
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.workout -> replaceFragment(Workout())
                 R.id.settings -> replaceFragment(Settings())
 
+
                 else -> {
 
                 }
@@ -59,6 +63,10 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
+
+
+
 
        /* baseAmount = findViewById(R.id.BaseAmount)
         seekBar = findViewById(R.id.SeekBarTip)
@@ -111,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    public fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout,fragment)
