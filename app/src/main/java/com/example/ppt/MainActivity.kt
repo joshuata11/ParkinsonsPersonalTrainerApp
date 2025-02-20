@@ -22,14 +22,6 @@ import com.example.ppt.databinding.ActivityMainBinding
 private  const val TAG = "MainActivity"
 private const val INITAL_TIP = 20
 class MainActivity : AppCompatActivity() {
-   /* private lateinit var baseAmount: EditText
-    private lateinit var seekBar: SeekBar
-    private lateinit var tipPercent: TextView
-    private lateinit var tipAmount: TextView
-    private lateinit var total: TextView
-    private lateinit var button: Button*/
-
-    private lateinit var imgbtn: ImageButton
 
     private lateinit var binding: ActivityMainBinding
 
@@ -40,86 +32,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         replaceFragment(Home())
 
-
-
-
-
         binding.bottomNavigationView.setOnItemSelectedListener{
 
             when(it.itemId){
-
-
                 R.id.home -> replaceFragment(Home())
                 R.id.workout -> replaceFragment(Workout())
                 R.id.settings -> replaceFragment(Settings())
 
 
-                else -> {
-
-                }
-
             }
                 true
-
 
         }
 
 
-
-
-
-       /* baseAmount = findViewById(R.id.BaseAmount)
-        seekBar = findViewById(R.id.SeekBarTip)
-        tipPercent = findViewById(R.id.Percent)
-        tipAmount = findViewById(R.id.tipTotal)
-        total = findViewById(R.id.TotalValue)
-        button = findViewById(R.id.button)*/
-
-
-       /* seekBar.progress = INITAL_TIP
-        tipPercent.text = "$INITAL_TIP%"
-        seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                Log.i(TAG, "onProgressChanges $progress")
-                tipPercent.text = "$progress%"
-                computeTipandTotal()
-
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-        })
-
-        baseAmount.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                Log.i(TAG, "afterTextChanged $s")
-                computeTipandTotal()
-            }
-        })
-
-
-        button.setOnClickListener(View.OnClickListener
-        {
-            val intent = Intent(this, SecondActivity::class.java)
-            intent.putExtra("Total", total.text)
-            startActivity(intent)
-
-        })*/
-
-
-
     }
 
-    public fun replaceFragment(fragment: Fragment){
+     fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout,fragment)
@@ -127,22 +56,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /*private fun computeTipandTotal() {
-
-        if (baseAmount.text.isEmpty()){
-            tipAmount.text = ""
-            total.text = ""
-            return
-        }
-        val baseamount = baseAmount.text.toString().toDouble()
-        val tipPercent = seekBar.progress
-
-        val tipamount = baseamount * tipPercent / 100
-        val totalA = baseamount + tipamount
-
-        tipAmount.text = "%.2f".format(tipamount)
-        total.text = "%.2f".format(totalA)
-
-
-    }*/
 }
