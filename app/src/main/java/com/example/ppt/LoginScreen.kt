@@ -48,7 +48,7 @@ class LoginScreen : AppCompatActivity() {
         button.setOnClickListener {
             val UserN = sharedPref.getString("userKey", "")
             val PassW = sharedPref.getString("passKey", "")
-            if (user.getText().isNotEmpty() && pass.getText().isNotEmpty()) {
+            if (user.getText().toString() == UserN && pass.getText().toString() == PassW) {
 
                 if (remember) {
                     editor.putBoolean("rememberKey", true)
