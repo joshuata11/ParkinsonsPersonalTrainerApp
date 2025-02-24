@@ -49,7 +49,7 @@ class Workout : Fragment() {
 
         val lsvtbtn = view.findViewById<ImageButton>(R.id.LSVTBtn)
 
-        val restingbtn = view.findViewById<ImageButton>(R.id.RestingBtn)
+        val restingbtn = view.findViewById<ImageButton>(R.id.restingbtn)
 
         val scrollingFragment = ScrollingFragment()
 
