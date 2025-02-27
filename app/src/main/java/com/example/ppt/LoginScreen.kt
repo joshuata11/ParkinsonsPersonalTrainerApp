@@ -15,6 +15,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.ppt.databinding.ActivityMainBinding
 
@@ -23,6 +24,7 @@ class LoginScreen : AppCompatActivity() {
     private lateinit var user: EditText
     private lateinit var button: Button
     private lateinit var rem: CheckBox
+    private lateinit var badlogin: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,9 @@ class LoginScreen : AppCompatActivity() {
         pass = findViewById(R.id.Pass)
         user = findViewById(R.id.Name)
         button = findViewById(R.id.Login)
-        rem = findViewById<CheckBox>(R.id.Remember)
+        rem = findViewById(R.id.Remember)
+        badlogin = findViewById(R.id.badLogin)
+
 
         rem.setOnCheckedChangeListener { buttonView, isChecked ->
             remember = isChecked
@@ -44,10 +48,10 @@ class LoginScreen : AppCompatActivity() {
         button.setOnClickListener {
             val UserN = sharedPref.getString("userKey", "")
             val PassW = sharedPref.getString("passKey", "")
-            if (user.getText().toString() == UserN  && pass.getText().toString() == PassW) {
+            if (user.getText().toString() == UserN && pass.getText().toString() == PassW) {
 
                 if (remember) {
-                    editor.putBoolean("rememberKey",true)
+                    editor.putBoolean("rememberKey", true)
                     editor.apply()
                 }
 
@@ -55,9 +59,11 @@ class LoginScreen : AppCompatActivity() {
                 startActivity(intent)
 
             }
+            else{
+                badlogin.isVisible = true
+            }
+
 
         }
-
-
     }
 }

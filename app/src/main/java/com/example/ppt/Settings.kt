@@ -1,5 +1,6 @@
 package com.example.ppt
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,7 +39,18 @@ class Settings : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        val view = inflater.inflate(R.layout.fragment_settings, container, false)
+
+        val logoutbtn = view.findViewById<Button>(R.id.Logout)
+
+
+
+        logoutbtn.setOnClickListener(){
+            val intent = Intent(this@Settings.requireContext(), LoginScreen::class.java)
+            startActivity(intent)
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -25,10 +25,6 @@ class Workout : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var imgbtn : ImageButton
-    var FragmentManage = MainActivity()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -53,31 +49,21 @@ class Workout : Fragment() {
 
         val lsvtbtn = view.findViewById<ImageButton>(R.id.LSVTBtn)
 
-        val restingbtn = view.findViewById<ImageButton>(R.id.RestingBtn)
-
-        val txt = view.findViewById<TextView>(R.id.textView4)
+        val restingbtn = view.findViewById<ImageButton>(R.id.restingbtn)
 
         val scrollingFragment = ScrollingFragment()
 
         walkingbtn.setOnClickListener{
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frame_layout, scrollingFragment ).commit()
-            }
+            switchFragment(scrollingFragment)
         }
         bikingbtn.setOnClickListener{
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frame_layout, scrollingFragment ).commit()
-            }
+            switchFragment(scrollingFragment)
         }
         lsvtbtn.setOnClickListener{
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frame_layout, scrollingFragment ).commit()
-            }
+            switchFragment(scrollingFragment)
         }
         restingbtn.setOnClickListener{
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frame_layout, scrollingFragment ).commit()
-            }
+            switchFragment(scrollingFragment)
         }
         return view
 
@@ -103,6 +89,13 @@ class Workout : Fragment() {
             }
 
     }
+
+    fun switchFragment(fragment: Fragment){
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frame_layout, fragment ).commit()
+    }
+        }
+
 
 
 
