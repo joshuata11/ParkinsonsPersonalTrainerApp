@@ -47,6 +47,7 @@ class Settings : Fragment() {
 
         logoutbtn.setOnClickListener(){
             val intent = Intent(this@Settings.requireContext(), LoginScreen::class.java)
+
             startActivity(intent)
         }
 
