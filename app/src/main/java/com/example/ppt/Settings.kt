@@ -56,8 +56,10 @@ class Settings : Fragment() {
 
 
         logoutbtn.setOnClickListener(){
+            editor.putBoolean("rememberKey", false)
+            editor.apply()
             val intent = Intent(this@Settings.requireContext(), LoginScreen::class.java)
-
+            println("Value of remember key is" + sharedPreferences.getBoolean("rememberKey", false))
             startActivity(intent)
         }
 
