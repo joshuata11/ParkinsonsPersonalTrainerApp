@@ -1,5 +1,6 @@
 package com.example.ppt
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.appcompat.app.AppCompatDelegate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +28,7 @@ class Settings : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var changedMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,12 @@ class Settings : Fragment() {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
         val logoutbtn = view.findViewById<Button>(R.id.Logout)
+        val themebtn = view.findViewById<Button>(R.id.DarkorLight)
+        val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val darkmode = sharedPreferences.getBoolean("dark", false)
+        var isdarkmodeon = false
+
 
 
 
@@ -51,8 +61,46 @@ class Settings : Fragment() {
             startActivity(intent)
         }
 
+        if(darkmode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            isdarkmodeon = true
+            themebtn.setText("Enable Light Mode")
+        }
+        else{
+            isdarkmodeon = false
+            themebtn.setText("Enable Dark Mode")
+        }
+
+
+        themebtn.setOnClickListener(){
+            if(isdarkmodeon){
+                requireActivity().window.setWindowAnimations(R.style.WindowAnimationFade)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putBoolean("dark", false)
+                editor.apply()
+                themebtn.setText("Enable Dark Mode")
+                isdarkmodeon = false
+
+
+
+            }
+            else {
+                requireActivity().window.setWindowAnimations(R.style.WindowAnimationFade)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("dark", true)
+                editor.apply()
+                themebtn.setText("Disable Dark Mode")
+                isdarkmodeon = true
+
+
+            }
+
+        }
+
         return view
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }

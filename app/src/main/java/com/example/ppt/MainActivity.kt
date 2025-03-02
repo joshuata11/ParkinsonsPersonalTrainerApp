@@ -1,6 +1,8 @@
 package com.example.ppt
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +15,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -28,9 +31,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val darkmode = sharedPreferences.getBoolean("dark", false)
+        if(darkmode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(Home())
+
+
 
         binding.bottomNavigationView.setOnItemSelectedListener{
 
@@ -47,6 +60,28 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+   /* override fun recreate() {
+        finish()
+        overridePendingTransition(R.style.WindowAnimationFade, R.style.WindowAnimationFade)
+
+        startActivity(intent)
+        overridePendingTransition(R.style.WindowAnimationFade, R.style.WindowAnimationFade)
+    }*/
+
+   /* override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        // If the UI mode changes (e.g., dark/light mode), the activity will not be recreated
+        if ((newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            // Apply Dark Mode
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            // Apply Light Mode
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }*/
+
 
      fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
