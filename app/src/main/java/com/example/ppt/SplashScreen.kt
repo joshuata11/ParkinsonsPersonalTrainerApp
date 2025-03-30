@@ -20,7 +20,12 @@ import androidx.fragment.app.Fragment
 import com.example.ppt.databinding.ActivityMainBinding
 import android.os.*
 
+object AppSession {
+    var isFirstLaunch = true
+}
+
 class SplashScreen : AppCompatActivity() {
+    private var count = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPref = getSharedPreferences("account_info", MODE_PRIVATE) ?: return
@@ -32,6 +37,14 @@ class SplashScreen : AppCompatActivity() {
 
             val setup = sharedPref.getBoolean("setupKey", true)
             val remember = sharedPref.getBoolean("rememberKey", false)
+            val darkmode = sharedPref.getBoolean("dark", false)
+            val editor = sharedPref.edit()
+
+            println("Value of count is" + count)
+
+
+
+            println("Value of remember from splash screen " + remember)
 
             /*
             val editor = sharedPref.edit()
@@ -48,6 +61,7 @@ class SplashScreen : AppCompatActivity() {
                 val intent = Intent(this, LoginScreen::class.java)
                 startActivity(intent)
             } else {
+                AppSession.isFirstLaunch = false
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

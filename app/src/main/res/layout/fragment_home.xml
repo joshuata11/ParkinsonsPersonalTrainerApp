@@ -11,7 +11,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/backgroundColor"
     android:elevation="10dp"
     tools:context=".Home">
 
@@ -23,16 +23,18 @@
         android:layout_marginStart="136dp"
         android:layout_marginTop="4dp"
         android:text="Home Page"
+        android:textColor="@color/textColor"
         android:textSize="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/CoolBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="104dp"
         android:layout_marginTop="16dp"
+        android:textColor="@color/textColor"
         android:text="Click to See Daily Goals"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -43,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
         android:layout_marginTop="48dp"
+        android:textColor="@color/textColor"
         android:text="SAMPLE DAILY GOAL GRAPH"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -51,8 +54,9 @@
         android:id="@+id/weeklyGoals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="96dp"
+        android:textColor="@color/textColor"
         android:text="Click to See Weekly Goals"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Weekly" />
@@ -63,9 +67,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
         android:layout_marginTop="64dp"
+        android:textColor="@color/textColor"
         android:text="SAMPLE WEEKLY GOAL GRAPH"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/CoolBtn" />
 
     <ImageView
         android:id="@+id/Weekly"
@@ -73,6 +78,7 @@
         android:layout_height="179dp"
         android:layout_marginStart="84dp"
         android:layout_marginTop="20dp"
+        android:background="@color/backgroundColor"
         android:src="@drawable/weeklygoalscrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

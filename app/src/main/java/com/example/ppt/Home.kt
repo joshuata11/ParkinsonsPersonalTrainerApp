@@ -1,10 +1,13 @@
 package com.example.ppt
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AppCompatDelegate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +25,17 @@ class Home : Fragment() {
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        val darkmode = sharedPreferences.getBoolean("dark", false)
+
+
+        if(darkmode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -33,8 +47,32 @@ class Home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+
+        val btn = view.findViewById<Button>(R.id.CoolBtn)
+        val bleScanner = BLEScanner()
+
+
+        btn.setOnClickListener(){
+            val v = bleScanner.scanBLEDecivce()
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        return view
     }
 
     companion object {

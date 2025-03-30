@@ -31,6 +31,7 @@ class LoginScreen : AppCompatActivity() {
         val sharedPref = getSharedPreferences("account_info", MODE_PRIVATE) ?: return
         val editor = sharedPref.edit()
         var remember = false
+        var rememberPref = sharedPref.getBoolean("rememberKey", false)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.login_screen)
@@ -40,6 +41,13 @@ class LoginScreen : AppCompatActivity() {
         rem = findViewById(R.id.Remember)
         badlogin = findViewById(R.id.badLogin)
 
+
+        if(rememberPref){
+            remember = true
+        }else
+        {
+            remember = false
+        }
 
         rem.setOnCheckedChangeListener { buttonView, isChecked ->
             remember = isChecked

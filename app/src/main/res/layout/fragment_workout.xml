@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/backgroundColor"
         android:orientation="vertical"
         tools:context=".Workout">
 
@@ -21,6 +21,7 @@
         android:layout_marginStart="124dp"
         android:layout_marginTop="4dp"
         android:text="Workout Page"
+        android:textColor="@color/textColor"
         android:textSize="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,9 +29,10 @@
         <ImageButton
             android:id="@+id/Walkingbtn"
             android:layout_width="373dp"
-            android:layout_height="138dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:background="#FFFFFF"
             android:scaleType="fitXY"
             android:src="@drawable/walkingbutton"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,35 +41,38 @@
         <ImageButton
             android:id="@+id/LSVTBtn"
             android:layout_width="373dp"
-            android:layout_height="138dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
             android:scaleType="fitXY"
             android:src="@drawable/lsvtbutton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/BikingBtn" />
 
         <ImageButton
             android:id="@+id/restingbtn"
             android:layout_width="373dp"
-            android:layout_height="138dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="592dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
             android:scaleType="fitXY"
             android:src="@drawable/restingbutton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/LSVTBtn" />
 
         <ImageButton
             android:id="@+id/BikingBtn"
             android:layout_width="373dp"
-            android:layout_height="138dp"
+            android:layout_height="200dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="232dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
             android:scaleType="fitXY"
             android:src="@drawable/bikingbutton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/Walkingbtn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
