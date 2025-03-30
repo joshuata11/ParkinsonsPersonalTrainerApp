@@ -37,7 +37,7 @@ class SplashScreen : AppCompatActivity() {
 
             val setup = sharedPref.getBoolean("setupKey", true)
             val remember = sharedPref.getBoolean("rememberKey", false)
-            val darkmode = sharedPref.getInt("setup", 0)
+            val darkmode = sharedPref.getBoolean("dark", false)
             val editor = sharedPref.edit()
 
             println("Value of count is" + count)
@@ -60,7 +60,7 @@ class SplashScreen : AppCompatActivity() {
             } else if (!remember) {
                 val intent = Intent(this, LoginScreen::class.java)
                 startActivity(intent)
-            } else if (AppSession.isFirstLaunch) {
+            } else {
                 AppSession.isFirstLaunch = false
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
