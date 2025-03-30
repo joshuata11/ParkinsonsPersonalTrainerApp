@@ -54,7 +54,7 @@ class Home : Fragment() {
 
 
         val btn = view.findViewById<Button>(R.id.CoolBtn)
-        val bleScanner = MainActivity()
+        val bleScanner = BLEScanner()
 
 
         btn.setOnClickListener(){

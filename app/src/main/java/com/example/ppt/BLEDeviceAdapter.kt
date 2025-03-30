@@ -11,7 +11,9 @@ class BLEDeviceAdapter {
     // Add a new device to the list and notify adapter
     fun addDevice(device: BluetoothDevice) {
         if (!devices.contains(device)) {
+            println("MADE IT TO ADD DEVICE")
             devices.add(device)
+            println("DEVICE ID: " + device)
         }
     }
 

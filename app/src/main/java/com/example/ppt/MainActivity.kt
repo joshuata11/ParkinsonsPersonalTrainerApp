@@ -63,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
+        checkBLEPermission()
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -86,25 +88,45 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun checkBLEPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+ (API 31+)
+            if (this@MainActivity.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED ||
+                this@MainActivity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+                this@MainActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ) {
 
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.ACCESS_FINE_LOCATION
 
-
+                    ),
+                    1 // Request Code
+                )
+            }
+        }
+    }
 
 
     // Device scan callback.
-    private val leScanCallback: ScanCallback = object : ScanCallback() {
+    /*private val leScanCallback: ScanCallback = object : ScanCallback() {
         val leDeviceListAdapter = BLEDeviceAdapter()
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             super.onScanResult(callbackType, result)
             leDeviceListAdapter.addDevice(result.device)
             //leDeviceListAdapter.notifyDataSetChanged()
         }
-    }
+
+        override fun onScanFailed(errorCode: Int) {
+            println("BLE FAILED WITH ERROR CODE:" + errorCode)
+        }
+    }*/
 
 
 
 
-    @SuppressLint("MissingPermission")
+    /*@SuppressLint("MissingPermission")
     fun scanBLEDecivce() {
 
         var bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -125,56 +147,40 @@ class MainActivity : AppCompatActivity() {
             val enable = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             enableBluetoothLauncher.launch(enable)
         }
-        /*if(!isBluetoothLeSupported()){
+        *//*if(!isBluetoothLeSupported()){
             return
-        }*/
+        }*//*
         else{
             println("MADE IT TO ELSE")
             val blescanner = bluetoothAdapter.bluetoothLeScanner
+
+            if(blescanner == null){
+                println("DEVICE DOES NOT SUPPORT BLE")
+                return
+            }
 
             var scanning = false
             val handler = Handler()
 
             if (!scanning) {
                 //handler.postDelayed({
-                    scanning = false
+                scanning = false
+                println("Context before: $this" )
 
-                    println("Scanning...")
-                    blescanner.stopScan(leScanCallback)
+                blescanner.stopScan(leScanCallback)
                 //}, 10000)
                 scanning = true
+                println("Scanning...")
                 blescanner.startScan(leScanCallback)
                 println("Finsihed scan")
             } else {
                 scanning = false
-                blescanner.stopScan(leScanCallback)
+                //blescanner.stopScan(leScanCallback)
             }
             return
         }
 
-    }
-
-    fun hasBle(context: Context): Boolean {
-        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
-    }
-
-    private fun isBluetoothLeSupported(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                // Check if Bluetooth LE scanning is supported
-                bluetoothAdapter.bluetoothLeScanner != null
-            } catch (e: NoSuchMethodError) {
-                // This exception occurs if the method doesn't exist
-                false
-            }
-        } else {
-            false
-        }
-    }
-
-
-
-
+    }*/
 
      fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
