@@ -58,7 +58,7 @@ class Home : Fragment() {
         checkBLEPermission()
 
 
-        val btn = view.findViewById<Button>(R.id.CoolBtn)
+        val btn = view.findViewById<Button>(R.id.BTBTN)
         val bleScanner = BLEScanner()
 
 
