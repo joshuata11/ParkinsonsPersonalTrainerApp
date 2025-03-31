@@ -56,12 +56,12 @@ class MainActivity : AppCompatActivity() {
         val darkmode = sharedPreferences.getBoolean("dark", false)
         println("Executing on create in main")
 
-       /* if(darkmode){
+       if(darkmode){
            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }*/
+        }
 
         //checkBLEPermission()
 
