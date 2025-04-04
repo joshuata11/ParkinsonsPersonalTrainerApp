@@ -67,6 +67,8 @@ class Settings : Fragment() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             isdarkmodeon = true
             themebtn.setText("Enable Light Mode")
+
+
         }
         else{
             isdarkmodeon = false
@@ -82,6 +84,8 @@ class Settings : Fragment() {
                 editor.apply()
                 themebtn.setText("Enable Dark Mode")
                 isdarkmodeon = false
+                val intent = Intent(this@Settings.requireContext(), MainActivity::class.java)
+                startActivity(intent)
 
 
 
@@ -93,6 +97,8 @@ class Settings : Fragment() {
                 editor.apply()
                 themebtn.setText("Disable Dark Mode")
                 isdarkmodeon = true
+                val intent = Intent(this@Settings.requireContext(), MainActivity::class.java)
+                startActivity(intent)
 
 
             }

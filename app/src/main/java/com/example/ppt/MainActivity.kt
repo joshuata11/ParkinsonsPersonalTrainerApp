@@ -56,14 +56,14 @@ class MainActivity : AppCompatActivity() {
         val darkmode = sharedPreferences.getBoolean("dark", false)
         println("Executing on create in main")
 
-        if(darkmode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+       if(darkmode){
+           AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-        checkBLEPermission()
+        //checkBLEPermission()
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun checkBLEPermission() {
+    fun checkBLEPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+ (API 31+)
             if (this@MainActivity.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED ||
                 this@MainActivity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||

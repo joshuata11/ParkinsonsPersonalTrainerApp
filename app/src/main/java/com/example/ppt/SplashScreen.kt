@@ -22,6 +22,7 @@ import android.os.*
 
 object AppSession {
     var isFirstLaunch = true
+
 }
 
 class SplashScreen : AppCompatActivity() {
@@ -57,10 +58,11 @@ class SplashScreen : AppCompatActivity() {
             if (setup) {
                 val intent = Intent(this, UserSetup::class.java)
                 startActivity(intent)
-            } else if (!remember) {
+                onDestroy()
+            } else if (!remember ) {
                 val intent = Intent(this, LoginScreen::class.java)
                 startActivity(intent)
-            } else {
+            } else{
                 AppSession.isFirstLaunch = false
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
