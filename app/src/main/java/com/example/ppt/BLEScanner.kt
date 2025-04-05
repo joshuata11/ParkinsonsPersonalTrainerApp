@@ -55,7 +55,7 @@ class BLEScanner {
         val bleScanner: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         println("Made it here")
         if(!bleScanner.isEnabled){
-            println("BT IS DIABLED")
+            println("BT IS DISABLED")
             val enable = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             //enableBluetoothLauncher.launch(enable)
         }
