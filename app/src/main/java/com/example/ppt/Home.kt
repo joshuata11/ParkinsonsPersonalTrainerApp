@@ -1,16 +1,28 @@
 package com.example.ppt
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.ppt.databinding.FragmentHomeBinding
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +38,12 @@ class Home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: FragmentHomeBinding
+    //private var devices = mutableListOf<ScanResult>()
+    private var fragmentContext: Context? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
@@ -54,16 +72,58 @@ class Home : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val context = requireContext()
 
         checkBLEPermission()
+        val bleScanner = BLEScanner()
+
+        var scanning = false
 
 
         val btn = view.findViewById<Button>(R.id.BTBTN)
-        val bleScanner = BLEScanner()
+
 
 
         btn.setOnClickListener(){
+
+
+
             val v = bleScanner.scanBLEDecivce()
+            //println("From show device dialog" + scanResults)
+
+
+
+
+
+             Handler(Looper.getMainLooper()).postDelayed({
+                val devices = BLEDeviceDataO.getList()
+                 println("DEVICES" + devices)
+                val deviceNames = devices.map { it.device.name ?: "Unnamed" }.toTypedArray()
+                //val deviceMac = devices.map { it.device.address ?: "No Address" }.toTypedArray()
+
+                 //val inflater = LayoutInflater.from(requireContext())
+                 //val dialogview = inflater.inflate(R.layout.dialog_custom, null)
+
+                // val macTextView = view.findViewById<TextView>(R.id.macAddress)
+                 //val deviceNameView = view.findViewById<TextView>(R.id.deviceTitle)
+
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Select a Device")
+                builder.setItems(deviceNames) { dialog, which ->
+                    val selectedItem = deviceNames[which]
+                    Toast.makeText(context, "You chose: $selectedItem", Toast.LENGTH_SHORT).show()
+                }
+
+                //builder.setItems(deviceNames) { dialog, which ->
+                // val selectedDevice = scanResults[which]
+                // Handle the device selection, e.g., start connection
+                // }
+                builder.setNegativeButton("Cancel", null)
+
+                builder.show()
+            },3000)
+
 
         }
 
@@ -79,6 +139,99 @@ class Home : Fragment() {
 
         return view
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Save the context when the fragment is attached
+        fragmentContext = context
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        // Clear the context when the fragment is detached to avoid memory leaks
+        fragmentContext = null
+    }
+
+    fun useContext(): Context {
+        // You can safely use fragmentContext here, but always check for null
+        fragmentContext?.let { context ->
+           return requireContext()
+        }
+        return requireContext()
+    }
+
+    /*override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Save the devices list in a bundle
+        outState.putParcelableArrayList("devices", ArrayList(devices))
+    }*/
+
+   /* // Restore the list state after the fragment is recreated
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let {
+            val restoredDevices = it.getParcelableArrayList<ScanResult>("devices")
+            restoredDevices?.let { list ->
+                devices.clear()
+                devices.addAll(list)
+            }
+        }
+    }
+
+    fun recieveList(scanResults: MutableList<ScanResult>) {
+        //println("FROM RECEIVE" + scanResults)
+        //devices.clear()
+        devices.addAll(scanResults)
+
+        println("after receive" + devices)
+    }
+
+    fun getList(): MutableList<ScanResult> {
+        println(devices)
+        return devices
+    }*/
+
+    @SuppressLint("MissingPermission")
+    fun showDeviceSelectionDialog(scanResults: MutableList<ScanResult>) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(3000) // Delay for 3 seconds
+
+
+            println("From show device dialog" + scanResults)
+            val deviceNames = scanResults.map { it.device.name ?: "Unnamed" }.toTypedArray()
+            val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6")
+
+            //
+            // val adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, items)
+
+            val builder = AlertDialog.Builder(fragmentContext)
+            builder.setTitle("Select a Device")
+            builder.setItems(deviceNames) { dialog, which ->
+                val selectedItem = deviceNames[which]
+                Toast.makeText(context, "You chose: $selectedItem", Toast.LENGTH_SHORT).show()
+            }
+
+            //builder.setItems(deviceNames) { dialog, which ->
+            // val selectedDevice = scanResults[which]
+            // Handle the device selection, e.g., start connection
+            // }
+            builder.setNegativeButton("Cancel", null)
+
+            builder.show()
+        }
+
+
+    }
+
+
+    fun switchFragment(fragment: Fragment) {
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frame_layout, fragment).commit()
+        }
+    }
+
+
 
 
     private fun checkBLEPermission() {
