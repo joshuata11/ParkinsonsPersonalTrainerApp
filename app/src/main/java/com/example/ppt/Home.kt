@@ -14,15 +14,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.databinding.FragmentHomeBinding
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,9 +109,12 @@ class Home : Fragment() {
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Select a Device")
-                builder.setItems(deviceNames) { dialog, which ->
-                    val selectedItem = deviceNames[which]
-                    Toast.makeText(context, "You chose: $selectedItem", Toast.LENGTH_SHORT).show()
+                builder.setItems(deviceNames) { _, which ->
+                    val selectedItem = devices[which].device
+                    BLEDeviceDataO.setSelectedDevice(selectedItem)
+                    Toast.makeText(context, "Connecting to: $selectedItem", Toast.LENGTH_SHORT).show()
+
+                    bleScanner.connectToDevice(selectedItem, requireContext())
                 }
 
                 //builder.setItems(deviceNames) { dialog, which ->

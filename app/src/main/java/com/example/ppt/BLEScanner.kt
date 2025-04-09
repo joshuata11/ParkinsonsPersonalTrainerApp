@@ -2,11 +2,19 @@ package com.example.ppt
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattDescriptor
+import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.util.Log
+import java.util.UUID
 
 class BLEScanner {
 
@@ -51,22 +59,6 @@ class BLEScanner {
 
             BLEDeviceDataO.setList(scanResults)
 
-
-///*
-//            andler(Looper.getMainLooper()).post{
-//                home.recieveList(scanResults)
-//            }H*/
-
-
-
-
-            //println(scanResults)
-            //home.showDeviceSelectionDialog(scanResults)
-
-
-
-
-            //leDeviceListAdapter.notifyDataSetChanged()
         }
 
         override fun onScanFailed(errorCode: Int) {
@@ -74,32 +66,128 @@ class BLEScanner {
         }
     }
 
-    /* fun setupRecyclerView(binding: FragmentHomeBinding, context: Context) {
-         println("SETTING UP RECYCLER")
-        binding.scanResultsRecyclerView.apply{
-            adapter = scanResultAdapter
-            layoutManager = LinearLayoutManager(
-                context,
-                RecyclerView.VERTICAL,
-                false
-            )
-            isNestedScrollingEnabled = false
+
+    @SuppressLint("MissingPermission")
+    fun connectToDevice(device: BluetoothDevice, context: Context){
+        val gatt =  device.connectGatt(context, false, object : BluetoothGattCallback(){
+            override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
+                if(newState == BluetoothProfile.STATE_CONNECTED){
+                    println("Connected to device: " + device.name)
+                    if (gatt != null) {
+                        gatt.discoverServices()
+                    }
+
+                }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
+                    println("Disconnected from device: " + device.name)
+                }
+            }
+
+            override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
+
+
+                val imuServiceUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                val accelerometerUUID = UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                val gyroscopeCharUUID = UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
+                val descriptorUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
+
+                val service = gatt?.getService(imuServiceUUID)
+                val accelChar = service?.getCharacteristic(accelerometerUUID)
+                val gyroChar = service?.getCharacteristic(gyroscopeCharUUID)
+
+
+
+
+
+
+                if (gatt != null && accelChar != null) {
+                    gatt.setCharacteristicNotification(accelChar, true)
+                    val acelDesc = accelChar?.getDescriptor(descriptorUUID)
+                    if (acelDesc != null) {
+                        acelDesc.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    }
+                    gatt.writeDescriptor(acelDesc)
+                }
+
+                if (gatt != null && gyroChar != null) {
+                    gatt.setCharacteristicNotification(gyroChar, true)
+                    val gyroDesc = accelChar?.getDescriptor(descriptorUUID)
+                    if (gyroDesc != null) {
+                        gyroDesc.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    }
+                    gatt.writeDescriptor(gyroDesc)
+                }
+
+
+
+
+
+                //val result = gatt?.readCharacteristic(characteristic)
+
+
+                println("Services discovered for device: " + device.name)
+
+            }
+
+            override fun onCharacteristicRead(
+                gatt: BluetoothGatt,
+                characteristic: BluetoothGattCharacteristic,
+                status: Int
+            ) {
+                if(status == BluetoothGatt.GATT_SUCCESS){
+                    val value = characteristic.value
+                    val stringValue = value.toString(Charsets.UTF_8)
+
+
+                    val xyzVals = stringValue.split(",")
+                    if(xyzVals.size == 3){
+                        val x = xyzVals[0].toFloatOrNull()
+                        val y = xyzVals[1].toFloatOrNull()
+                        val z = xyzVals[2].toFloatOrNull()
+
+                        println("DATA READ FROM DEVICE: X: " + x +" Y: " + y +" Z: " + z )
+                    }
+
+
+                }
+            }
+
+            override fun onCharacteristicChanged(
+                gatt: BluetoothGatt?,
+                characteristic: BluetoothGattCharacteristic?
+            ) {
+                val uuid = characteristic?.uuid.toString()
+                val value = characteristic?.value?.toString(Charsets.UTF_8)
+
+                when (uuid) {
+                    "19b10000-e8f2-537e-4f6c-d104768a1215" -> { // Accelerometer
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts?.get(0)?.toFloatOrNull()
+                                val y = parts.get(1)?.toFloatOrNull()
+                                val z = parts.get(2)?.toFloatOrNull()
+                                println("ACCELEROMETER: X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+
+                    "19b10000-e8f2-537e-4f6c-d104768a1216" -> { // Gyroscope
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts[0].toFloatOrNull()
+                                val y = parts[1].toFloatOrNull()
+                                val z = parts[2].toFloatOrNull()
+                                println("GYROSCOPE: X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+            }
+
         }
-
-        val animator = binding.scanResultsRecyclerView.itemAnimator
-        if (animator is SimpleItemAnimator) {
-            animator.supportsChangeAnimations = false
-        }
-    }*/
-
-
-    fun getList(): MutableList<ScanResult> {
-        println("from blescan" + scanResults)
-        while(scanResults.isEmpty()){
-
-        }
-        return scanResults
+    })
     }
+
 
     @SuppressLint("MissingPermission")
     fun scanBLEDecivce() {
