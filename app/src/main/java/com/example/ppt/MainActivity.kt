@@ -36,6 +36,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.ppt.databinding.ActivityMainBinding
 
 
@@ -65,6 +68,9 @@ class MainActivity : AppCompatActivity() {
 
         //checkBLEPermission()
 
+        //setupRecyclerView()
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -87,6 +93,8 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 
     fun checkBLEPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+ (API 31+)
