@@ -101,7 +101,7 @@ class BLEScanner {
 
                 if (gatt != null && accelChar != null) {
                     gatt.setCharacteristicNotification(accelChar, true)
-                    val acelDesc = accelChar?.getDescriptor(descriptorUUID)
+                    val acelDesc = accelChar.getDescriptor(descriptorUUID)
                     if (acelDesc != null) {
                         acelDesc.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                     }
