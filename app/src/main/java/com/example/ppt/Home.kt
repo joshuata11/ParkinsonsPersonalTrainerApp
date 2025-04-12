@@ -98,7 +98,8 @@ class Home : Fragment() {
              Handler(Looper.getMainLooper()).postDelayed({
                 val devices = BLEDeviceDataO.getList()
                  println("DEVICES" + devices)
-                val deviceNames = devices.map { it.device.name ?: "Unnamed" }.toTypedArray()
+                val deviceNames = devices.map { it.name ?: "Unnamed" }.toTypedArray()
+                 val checkedItems = BooleanArray(deviceNames.size)
                 //val deviceMac = devices.map { it.device.address ?: "No Address" }.toTypedArray()
 
                  //val inflater = LayoutInflater.from(requireContext())
@@ -109,13 +110,26 @@ class Home : Fragment() {
 
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Select a Device")
-                builder.setItems(deviceNames) { _, which ->
+                 builder.setMultiChoiceItems(deviceNames, checkedItems){_, index, isChecked ->
+                     checkedItems[index] = isChecked
+                 }
+                     .setPositiveButton("Connect") { _, _ ->
+                         for (i in checkedItems.indices) {
+                             if (checkedItems[i]) {
+                                 bleScanner.connectToDevice(devices[i], requireContext())
+                             }
+                         }
+                     }
+
+
+
+                /*builder.setItems(deviceNames) { _, which ->
                     val selectedItem = devices[which].device
                     BLEDeviceDataO.setSelectedDevice(selectedItem)
                     Toast.makeText(context, "Connecting to: $selectedItem", Toast.LENGTH_SHORT).show()
 
                     bleScanner.connectToDevice(selectedItem, requireContext())
-                }
+                }*/
 
                 //builder.setItems(deviceNames) { dialog, which ->
                 // val selectedDevice = scanResults[which]
