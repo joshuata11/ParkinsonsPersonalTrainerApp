@@ -9,10 +9,10 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 
 object BLEDeviceDataO{
-    private val scanResultslist = mutableListOf<ScanResult>()
+    private val scanResultslist = mutableListOf<BluetoothDevice>()
     private var selectedDevice: BluetoothDevice? = null
 
-    fun setList(scanResults: MutableList<ScanResult>) {
+    fun setList(scanResults: MutableList<BluetoothDevice>) {
 
         scanResultslist.clear()
         scanResultslist.addAll(scanResults)
@@ -20,7 +20,7 @@ object BLEDeviceDataO{
 
     }
 
-    fun getList(): MutableList<ScanResult> {
+    fun getList(): MutableList<BluetoothDevice> {
         println("from get list" + scanResultslist)
         return scanResultslist
     }

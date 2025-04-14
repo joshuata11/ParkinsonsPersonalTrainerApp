@@ -20,29 +20,36 @@ class BLEScanner {
 
     var scanning = false
     private lateinit var home: Home
-    //private lateinit var binding: FragmentHomeBinding
+    private var nextDescriptorToWrite: BluetoothGattDescriptor? = null    //private lateinit var binding: FragmentHomeBinding
 
 
-    private val scanResults = mutableListOf<ScanResult>()
-    val scanResultAdapter: ScanResultAdapter by lazy {
+    private val scanResults = mutableListOf<BluetoothDevice>()
+    /*val scanResultAdapter: ScanResultAdapter by lazy {
         ScanResultAdapter(scanResults) { result ->
-            /*if (scanning) {
+            *//*if (scanning) {
                 //stopBleScan()
             }
             with(result.device) {
                 //("Connecting to $address")
             //    ConnectionManager.connect(this, this@MainActivity)
-            }*/
+            }*//*
         }
-    }
+    }*/
 
     // Device scan callback.
     private val leScanCallback: ScanCallback = object : ScanCallback() {
         //val leDeviceListAdapter = BLEDeviceAdapter()
         @SuppressLint("MissingPermission")
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val indexQuery = scanResults.indexOfFirst { it.device.address == result.device.address }
-            if(indexQuery != -1){
+            val indexQuery = scanResults.indexOfFirst { result.device.address == result.device.address }
+
+            val device = result.device
+            if(!scanResults.contains(device)){
+                scanResults.add(device)
+            }
+
+
+            /* if(indexQuery != -1){
 
                 println("item already in list")
 
@@ -55,7 +62,7 @@ class BLEScanner {
                 //scanResultAdapter.notifyItemChanged(scanResults.size - 1)
                 Log.i("BLEScanner", "Added new device: ${result.device.name ?: "Unnamed"}, Address: ${result.device.address}")
 
-            }
+            }*/
 
             BLEDeviceDataO.setList(scanResults)
 
@@ -67,12 +74,17 @@ class BLEScanner {
     }
 
 
+    val connectedDevices = mutableListOf<BluetoothDevice>()
     @SuppressLint("MissingPermission")
     fun connectToDevice(device: BluetoothDevice, context: Context){
-        val gatt =  device.connectGatt(context, false, object : BluetoothGattCallback(){
+        if(!connectedDevices.contains(device)){
+            connectedDevices.add(device)
+        }
+        val gatt =  device.connectGatt(context, true, object : BluetoothGattCallback(){
             override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
                 if(newState == BluetoothProfile.STATE_CONNECTED){
                     println("Connected to device: " + device.name)
+
                     if (gatt != null) {
                         gatt.discoverServices()
                     }
@@ -81,6 +93,8 @@ class BLEScanner {
                     println("Disconnected from device: " + device.name)
                 }
             }
+
+
 
             override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
 
@@ -98,58 +112,51 @@ class BLEScanner {
 
 
 
-
                 if (gatt != null && accelChar != null) {
                     gatt.setCharacteristicNotification(accelChar, true)
                     val acelDesc = accelChar.getDescriptor(descriptorUUID)
                     if (acelDesc != null) {
                         acelDesc.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                     }
-                    gatt.writeDescriptor(acelDesc)
-                }
 
-                if (gatt != null && gyroChar != null) {
+
                     gatt.setCharacteristicNotification(gyroChar, true)
-                    val gyroDesc = accelChar?.getDescriptor(descriptorUUID)
+                    val gyroDesc = gyroChar?.getDescriptor(descriptorUUID)
                     if (gyroDesc != null) {
                         gyroDesc.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                     }
-                    gatt.writeDescriptor(gyroDesc)
+                    gatt.writeDescriptor(acelDesc)
+                    nextDescriptorToWrite = gyroDesc
+
                 }
 
 
 
-
-
-                //val result = gatt?.readCharacteristic(characteristic)
 
 
                 println("Services discovered for device: " + device.name)
 
             }
 
-            override fun onCharacteristicRead(
-                gatt: BluetoothGatt,
-                characteristic: BluetoothGattCharacteristic,
+            override fun onDescriptorWrite(
+                gatt: BluetoothGatt?,
+                descriptor: BluetoothGattDescriptor?,
                 status: Int
             ) {
-                if(status == BluetoothGatt.GATT_SUCCESS){
-                    val value = characteristic.value
-                    val stringValue = value.toString(Charsets.UTF_8)
-
-
-                    val xyzVals = stringValue.split(",")
-                    if(xyzVals.size == 3){
-                        val x = xyzVals[0].toFloatOrNull()
-                        val y = xyzVals[1].toFloatOrNull()
-                        val z = xyzVals[2].toFloatOrNull()
-
-                        println("DATA READ FROM DEVICE: X: " + x +" Y: " + y +" Z: " + z )
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    // If there's another descriptor waiting, write it next
+                    nextDescriptorToWrite?.let {
+                        gatt?.writeDescriptor(it)
+                        nextDescriptorToWrite = null
+                        if (gatt != null) {
+                            sendVibrationCommand(gatt)
+                        }
                     }
-
-
+                } else {
+                    println("Descriptor write failed with status: $status")
                 }
             }
+
 
             override fun onCharacteristicChanged(
                 gatt: BluetoothGatt?,
@@ -159,6 +166,7 @@ class BLEScanner {
                 val value = characteristic?.value?.toString(Charsets.UTF_8)
 
                 when (uuid) {
+
                     "19b10000-e8f2-537e-4f6c-d104768a1215" -> { // Accelerometer
                         val parts = value?.split(",")
                         if (parts != null) {
@@ -166,10 +174,11 @@ class BLEScanner {
                                 val x = parts?.get(0)?.toFloatOrNull()
                                 val y = parts.get(1)?.toFloatOrNull()
                                 val z = parts.get(2)?.toFloatOrNull()
-                                println("ACCELEROMETER: X: $x, Y: $y, Z: $z")
+                                println("Accelerometer for device " + connectedDevices[0].name +": X: $x, Y: $y, Z: $z")
                             }
                         }
                     }
+
 
                     "19b10000-e8f2-537e-4f6c-d104768a1216" -> { // Gyroscope
                         val parts = value?.split(",")
@@ -178,15 +187,54 @@ class BLEScanner {
                                 val x = parts[0].toFloatOrNull()
                                 val y = parts[1].toFloatOrNull()
                                 val z = parts[2].toFloatOrNull()
-                                println("GYROSCOPE: X: $x, Y: $y, Z: $z")
+                                println("Gyroscope for device " + connectedDevices[0].name +": X: $x, Y: $y, Z: $z")
                             }
                         }
                     }
             }
 
         }
+
+
     })
     }
+
+
+    var alreadysent = 0
+    val byte = ByteArray(1)
+    @SuppressLint("MissingPermission")
+    fun sendVibrationCommand(gatt: BluetoothGatt) {
+
+        val serviceUUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
+        val characteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
+
+        val service = gatt.getService(serviceUUID)
+        if (service == null) {
+            println("Service is NULL")
+            return
+        }
+
+        val characteristic = service.getCharacteristic(characteristicUUID)
+        if (characteristic == null) {
+            println("Characteristic is NULL")
+            return
+        }
+        println("INSIDE SEND VIBRATION")
+
+            characteristic.value =  byteArrayOf(0x01) // or"1".toByteArray(Charsets.UTF_8)
+            characteristic.writeType =
+                BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE // or WRITE_TYPE_NO_RESPONSE
+
+            if (alreadysent == 0) {
+                println("SENDING VIBRATION")
+                val result = gatt.writeCharacteristic(characteristic)
+                alreadysent = 1
+            }
+
+
+    }
+
+
 
 
     @SuppressLint("MissingPermission")
