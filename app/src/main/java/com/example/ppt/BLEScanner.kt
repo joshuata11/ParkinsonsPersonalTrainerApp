@@ -103,9 +103,9 @@ class BLEScanner {
             override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
 
 
-                val imuServiceUUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
-                val accelerometerUUID = UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
-                val gyroscopeCharUUID = UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
+                val imuServiceUUID = PPT_LW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                val accelerometerUUID = PPT_LW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                val gyroscopeCharUUID = PPT_LW.GYROSCOPE.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
                 val descriptorUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
 
                 val service = gatt?.getService(imuServiceUUID)
@@ -210,8 +210,8 @@ class BLEScanner {
     @SuppressLint("MissingPermission")
     fun sendVibrationCommand() {
 
-        val serviceUUID = UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
-        val characteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
+        val serviceUUID = PPT_LW.VIBRATION.serviceUUID//UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
+        val characteristicUUID = PPT_LW.VIBRATION.characteristicUUID//UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
 
         val service = gatt?.getService(serviceUUID)
         if (service == null) {
