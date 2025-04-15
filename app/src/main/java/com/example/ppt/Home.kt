@@ -81,6 +81,12 @@ class Home : Fragment() {
 
 
         val btn = view.findViewById<Button>(R.id.BTBTN)
+        val btn2 = view.findViewById<Button>(R.id.VIBRATION)
+
+        btn2.setOnClickListener(){
+            bleScanner.sendVibrationCommand()
+        }
+
 
 
 
