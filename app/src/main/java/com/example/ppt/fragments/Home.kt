@@ -1,4 +1,4 @@
-package com.example.ppt
+package com.example.ppt.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -10,29 +10,29 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.app.AppCompatDelegate
-import com.example.ppt.databinding.FragmentHomeBinding
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.ppt.R
+import com.example.ppt.bluetoothlowenergy.BLEDeviceDataO
+import com.example.ppt.bluetoothlowenergy.BLEScanner
+import com.example.ppt.databinding.FragmentHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [Home.newInstance] factory method to
  * create an instance of this fragment.
  */
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
 class Home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -76,9 +76,6 @@ class Home : Fragment() {
 
         checkBLEPermission()
         val bleScanner = BLEScanner()
-
-        var scanning = false
-
 
         val btn = view.findViewById<Button>(R.id.BTBTN)
         val btn2 = view.findViewById<Button>(R.id.VIBRATION)

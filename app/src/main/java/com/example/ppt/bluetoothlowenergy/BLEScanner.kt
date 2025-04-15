@@ -1,4 +1,4 @@
-package com.example.ppt
+package com.example.ppt.bluetoothlowenergy
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
@@ -13,8 +13,12 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import com.example.ppt.fragments.Home
+import com.example.ppt.sensor_enums.PPT_LL
+import com.example.ppt.sensor_enums.PPT_LW
+import com.example.ppt.sensor_enums.PPT_RL
+import com.example.ppt.sensor_enums.PPT_RW
 import java.util.UUID
 
 class BLEScanner {
@@ -23,22 +27,22 @@ class BLEScanner {
     private lateinit var home: Home
     private var nextDescriptorToWrite: BluetoothGattDescriptor? = null
     private var gatt: BluetoothGatt? = null
+    private var imuServiceUUID: UUID? = null
+    private var lwaccelerometerUUID: UUID? = null
+    private var lwgyroscopeCharUUID: UUID? = null
+    private var lwvibrationUUID: UUID? = null
+    private var rwaccelerometerUUID: UUID? = null
+    private var rwgyroscopeCharUUID: UUID? = null
+    private var rwvibrationUUID: UUID? = null
+    private var llaccelerometerUUID: UUID? = null
+    private var llgyroscopeCharUUID: UUID? = null
+    private var llvibrationUUID: UUID? = null
+    private var rlaccelerometerUUID: UUID? = null
+    private var rlgyroscopeCharUUID: UUID? = null
+    private var rlvibrationUUID: UUID? = null
 
 
     private val scanResults = mutableListOf<BluetoothDevice>()
-    /*val scanResultAdapter: ScanResultAdapter by lazy {
-        ScanResultAdapter(scanResults) { result ->
-            *//*if (scanning) {
-                //stopBleScan()
-            }
-            with(result.device) {
-                //("Connecting to $address")
-            //    ConnectionManager.connect(this, this@MainActivity)
-            }*//*
-        }
-    }*/
-
-
 
     // Device scan callback.
     private val leScanCallback: ScanCallback = object : ScanCallback() {
@@ -51,22 +55,6 @@ class BLEScanner {
             if(!scanResults.contains(device)){
                 scanResults.add(device)
             }
-
-
-            /* if(indexQuery != -1){
-
-                println("item already in list")
-
-            }else{
-                with(result.device){
-                    Log.i("ScanCallback", "Found BLE device! Name: ${name ?: "Unnamed"}, address: $address")
-
-                }
-                scanResults.add(result)
-                //scanResultAdapter.notifyItemChanged(scanResults.size - 1)
-                Log.i("BLEScanner", "Added new device: ${result.device.name ?: "Unnamed"}, Address: ${result.device.address}")
-
-            }*/
 
             BLEDeviceDataO.setList(scanResults)
 
@@ -112,19 +100,32 @@ class BLEScanner {
                         // Handle each matched device name
                         when (name) {
                             "PPT_LW" -> {
-                                // do something for LW
+                                imuServiceUUID = PPT_LW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                                lwaccelerometerUUID = PPT_LW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                                lwgyroscopeCharUUID = PPT_LW.GYROSCOPE.characteristicUUID
+                                lwvibrationUUID = PPT_LW.VIBRATION.serviceUUID
+
                             }
 
                             "PPT_RW" -> {
-                                // do something for RW
+                                imuServiceUUID = PPT_RW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                                rwaccelerometerUUID = PPT_RW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                                rwgyroscopeCharUUID = PPT_RW.GYROSCOPE.characteristicUUID
+                                rwvibrationUUID = PPT_RW.VIBRATION.serviceUUID
                             }
 
                             "PPT_LL" -> {
-                                // do something for LL
+                                imuServiceUUID = PPT_LL.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                                llaccelerometerUUID = PPT_LL.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                                llgyroscopeCharUUID = PPT_LL.GYROSCOPE.characteristicUUID
+                                llvibrationUUID = PPT_LL.VIBRATION.serviceUUID
                             }
 
                             "PPT_RL" -> {
-                                // do something for RL
+                                imuServiceUUID = PPT_RL.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+                                rlaccelerometerUUID = PPT_RL.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
+                                rlgyroscopeCharUUID = PPT_RL.GYROSCOPE.characteristicUUID
+                                rlvibrationUUID = PPT_RL.VIBRATION.serviceUUID
                             }
                         }
                     }
@@ -133,14 +134,12 @@ class BLEScanner {
 
 
 
-                val imuServiceUUID = PPT_LW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
-                val accelerometerUUID = PPT_LW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
-                val gyroscopeCharUUID = PPT_LW.GYROSCOPE.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
+                //UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
                 val descriptorUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb")
 
                 val service = gatt?.getService(imuServiceUUID)
-                val accelChar = service?.getCharacteristic(accelerometerUUID)
-                val gyroChar = service?.getCharacteristic(gyroscopeCharUUID)
+                val accelChar = service?.getCharacteristic(lwaccelerometerUUID)
+                val gyroChar = service?.getCharacteristic(lwgyroscopeCharUUID)
 
 
 
@@ -163,9 +162,6 @@ class BLEScanner {
                     nextDescriptorToWrite = gyroDesc
 
                 }
-
-
-
 
 
                 println("Services discovered for device: " + device.name)
@@ -240,10 +236,10 @@ class BLEScanner {
     @SuppressLint("MissingPermission")
     fun sendVibrationCommand() {
 
-        val serviceUUID = PPT_LW.VIBRATION.serviceUUID//UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
+        //UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
         val characteristicUUID = PPT_LW.VIBRATION.characteristicUUID//UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
 
-        val service = gatt?.getService(serviceUUID)
+        val service = gatt?.getService(lwvibrationUUID)
         if (service == null) {
             println("Service is NULL")
             return
@@ -258,9 +254,6 @@ class BLEScanner {
         val byteVal = booleanToByteArray(true)
         characteristic.value = byteVal
 
-            //characteristic.value =  byteArrayOf(0x01) // or"1".toByteArray(Charsets.UTF_8)
-           // characteristic.writeType =
-            //    BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE // or WRITE_TYPE_NO_RESPONSE
 
           //  if (alreadysent == 0) {
              //   Handler(Looper.getMainLooper()).postDelayed({
@@ -295,12 +288,11 @@ class BLEScanner {
 
 
         home = Home()
-        println("made it here")
         val bleScanner: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        println("Made it here")
         if(!bleScanner.isEnabled){
             println("BT IS DISABLED")
             val enable = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+
 
         }
         /*if(!isBluetoothLeSupported()){

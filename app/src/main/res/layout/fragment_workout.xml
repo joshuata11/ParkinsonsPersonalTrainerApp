@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundColor"
         android:orientation="vertical"
-        tools:context=".Workout">
+        tools:context=".fragments.Workout">
 
     <TextView
         android:id="@+id/textView4"

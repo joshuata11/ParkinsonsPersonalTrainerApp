@@ -1,8 +1,8 @@
-package com.example.ppt
+package com.example.ppt.sensor_enums
 
 import java.util.UUID
 
-enum class PPT_LW(val serviceUUID: UUID, val characteristicUUID: UUID) {
+enum class PPT_RL(val serviceUUID: UUID, val characteristicUUID: UUID) {
     ACCELEROMETER(
         UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"),
         UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")

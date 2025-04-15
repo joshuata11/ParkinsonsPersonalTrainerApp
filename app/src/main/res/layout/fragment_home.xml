@@ -13,7 +13,7 @@
     android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
     android:elevation="10dp"
-    tools:context=".Home">
+    tools:context=".fragments.Home">
 
     <TextView
         android:id="@+id/textView3"

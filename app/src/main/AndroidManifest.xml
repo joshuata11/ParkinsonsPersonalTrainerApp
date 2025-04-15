@@ -32,19 +32,19 @@
         tools:targetApi="34">
         <service android:name=".TimerService" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:configChanges="uiMode"
             android:exported="false"/>
         <activity
-            android:name=".LoginScreen"
+            android:name=".activities.LoginScreen"
             android:configChanges="uiMode"
             android:exported="false"/>
         <activity
-            android:name=".UserSetup"
+            android:name=".activities.UserSetup"
             android:configChanges="uiMode"
             android:exported="false"/>
         <activity
-            android:name=".SplashScreen"
+            android:name=".activities.SplashScreen"
             android:configChanges="uiMode"
             android:launchMode="singleTask"
             android:exported="true">
