@@ -103,6 +103,36 @@ class BLEScanner {
             override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
 
 
+
+                val targetNames = setOf("PPT_LW", "PPT_RW", "PPT_LL", "PPT_RL")
+
+                connectedDevices.forEach { device ->
+                    val name = device.name
+                    if (name != null && name in targetNames) {
+                        // Handle each matched device name
+                        when (name) {
+                            "PPT_LW" -> {
+                                // do something for LW
+                            }
+
+                            "PPT_RW" -> {
+                                // do something for RW
+                            }
+
+                            "PPT_LL" -> {
+                                // do something for LL
+                            }
+
+                            "PPT_RL" -> {
+                                // do something for RL
+                            }
+                        }
+                    }
+                }
+
+
+
+
                 val imuServiceUUID = PPT_LW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
                 val accelerometerUUID = PPT_LW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
                 val gyroscopeCharUUID = PPT_LW.GYROSCOPE.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1216")
@@ -172,7 +202,7 @@ class BLEScanner {
 
                 when (uuid) {
 
-                    "19b10000-e8f2-537e-4f6c-d104768a1215" -> { // Accelerometer
+                    PPT_LW.ACCELEROMETER.characteristicUUID.toString() -> { // Accelerometer
                         val parts = value?.split(",")
                         if (parts != null) {
                             if (parts.size == 3) {
@@ -185,7 +215,7 @@ class BLEScanner {
                     }
 
 
-                    "19b10000-e8f2-537e-4f6c-d104768a1216" -> { // Gyroscope
+                    PPT_LW.GYROSCOPE.characteristicUUID.toString() -> { // Gyroscope
                         val parts = value?.split(",")
                         if (parts != null) {
                             if (parts.size == 3) {
