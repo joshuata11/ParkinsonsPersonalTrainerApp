@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.ppt.PrefObject
 import com.example.ppt.R
 import com.example.ppt.TimerService
 import com.example.ppt.bluetoothlowenergy.BLEDeviceDataO
@@ -54,6 +55,7 @@ class WalkingFragment : Fragment() {
         val pageview = inflater.inflate(R.layout.fragment_walking, container, false)
         val starter = pageview.findViewById<Button>(R.id.startses)
         val ender = pageview.findViewById<Button>(R.id.endses)
+        val getter = pageview.findViewById<Button>(R.id.valuebut)
         val check = pageview.findViewById<CheckBox>(R.id.checkBox)
 
         val context = requireContext()
@@ -89,20 +91,30 @@ class WalkingFragment : Fragment() {
         //val getter = pageview.findViewById<Button>(R.id.getses)
 
         starter.setOnClickListener {
-            if (!ongoing) {
+
+            if (!PrefObject.getSession()) {
+                //if (!ongoing) {
                 val intent = Intent(context, TimerService::class.java)
                 context?.startService(intent)
-                ongoing = true
+                //ongoing = true
+                PrefObject.setSession(true)
             }
         }
 
         ender.setOnClickListener {
-            if (ongoing) {
+            if (PrefObject.getSession()) {
+                //if (ongoing) {
                 val intent = Intent(context, TimerService::class.java)
                 context?.stopService(intent)
-                ongoing = false
+                //ongoing = false
+                PrefObject.setSession(false)
             }
         }
+
+        /*getter.setOnClickListener {
+            temp = br?.getData()!!
+            println("$temp was received")
+        }*/
 
         return pageview
     }

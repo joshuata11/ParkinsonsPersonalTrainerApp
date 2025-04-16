@@ -15,9 +15,6 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.R
-import com.example.ppt.fragments.AboutSettings
-import com.example.ppt.fragments.AccountSettings
-import com.example.ppt.fragments.SensorSettings
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Settings.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Settings : Fragment() {
+class AboutSettings : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -48,30 +45,9 @@ class Settings : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        val accbtn = view.findViewById<ImageButton>(R.id.AccountButton)
-        val senbtn = view.findViewById<ImageButton>(R.id.SensorButton)
-        val abobtn = view.findViewById<ImageButton>(R.id.AboutButton)
-
-        accbtn.setOnClickListener() {
-            switchFragment(AccountSettings())
-        }
-
-        senbtn.setOnClickListener() {
-            switchFragment(SensorSettings())
-        }
-
-        abobtn.setOnClickListener() {
-            switchFragment(AboutSettings())
-        }
+        val view = inflater.inflate(R.layout.fragment_setting_about, container, false)
 
         return view
-    }
-
-    fun switchFragment(fragment: Fragment){
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frame_layout, fragment ).commit()
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

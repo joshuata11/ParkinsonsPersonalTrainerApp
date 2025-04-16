@@ -353,17 +353,9 @@ class BLEScanner {
         println("INSIDE SEND VIBRATION")
         val byteVal = booleanToByteArray(true)
         characteristic.value = byteVal
-
-
-          //  if (alreadysent == 0) {
-             //   Handler(Looper.getMainLooper()).postDelayed({
-                    println("SENDING VIBRATION")
-                    val result = BLEDeviceDataO.getGatt()?.writeCharacteristic(characteristic)
-                    alreadysent = 1
-
-            //    }, 50)
-           // }
-
+        println("SENDING VIBRATION")
+        val result = BLEDeviceDataO.getGatt()?.writeCharacteristic(characteristic)
+        alreadysent = 1
 
     }
 

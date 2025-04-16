@@ -26,7 +26,7 @@ object writeData {
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val militarytime = format.format(Date(timestamp))
         val dataLine = buildString {
-            append("$militarytime, $sensorType")
+            append("$militarytime, $sensorType,")
             append("$x,  $y , $z ")
             append("\n")
         }
