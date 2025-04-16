@@ -16,9 +16,9 @@ class TimerService: Service(){
         override fun run() {
             timeElapsed = System.currentTimeMillis() - timeStarted
             seconds = timeElapsed/1000
-            println(seconds.toString() + " seconds")
-            val intent = Intent("TIMER_UPDATE")
-            intent.putExtra("time", timeElapsed)
+            println("$seconds seconds")
+            val intent = Intent("com.TIMER_UPDATE")
+            intent.putExtra("com.Time", seconds)
             sendBroadcast(intent)
             // Repeat every .9 second
             handler.postDelayed(this, 900)
