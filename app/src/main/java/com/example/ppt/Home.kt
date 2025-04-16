@@ -11,8 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Button
+import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,13 +33,34 @@ class Home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    //private lateinit var binding: ActivityMainBinding
+    private val calendar = Calendar.getInstance()
+    private val currentYear = calendar.get(Calendar.YEAR)
+    private val currentMonth = calendar.get(Calendar.MONTH)
+    private val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+        val textViewDate = view.findViewById<TextView>(R.id.WorkoutInfo)
+
+        val date = calendarView.date
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        val dateCurrent = dateFormat.format(Date(date))
+        textViewDate.text = "Workouts completed today $dateCurrent :"
+
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val selectedDate = "${month + 1}/$dayOfMonth/$year"
+            textViewDate.text = "Workouts completed on $selectedDate :"
+            if(year == currentYear && month == currentMonth && dayOfMonth == currentDay){
+                textViewDate.text = "Workouts completed today $selectedDate :"
+            }
+        }
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //binding = ActivityMainBinding.inflate(layoutInflater)
-        //setContentView(binding.root)
-        //binding.calendarView.setOnDateChangeListener
-
         val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
         val darkmode = sharedPreferences.getBoolean("dark", false)
 
