@@ -18,7 +18,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CalendarView
 import android.widget.CheckBox
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -31,6 +33,10 @@ import com.example.ppt.databinding.FragmentHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
@@ -56,6 +62,32 @@ class Home : Fragment() {
                 Log.d("BLE", "Bluetooth not enabled by user")
             }
         }
+    private val calendar = Calendar.getInstance()
+    private val currentYear = calendar.get(Calendar.YEAR)
+    private val currentMonth = calendar.get(Calendar.MONTH)
+    private val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
+        val textViewDate = view.findViewById<TextView>(R.id.WorkoutInfo)
+
+        val date = calendarView.date
+        val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        val dateCurrent = dateFormat.format(Date(date))
+        textViewDate.text = "Workouts completed today $dateCurrent :"
+
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val selectedDate = "${month + 1}/$dayOfMonth/$year"
+            textViewDate.text = "Workouts completed on $selectedDate :"
+            if(year == currentYear && month == currentMonth && dayOfMonth == currentDay){
+                textViewDate.text = "Workouts completed today $selectedDate :"
+            }
+        }
+
+    }
+
 
 
 

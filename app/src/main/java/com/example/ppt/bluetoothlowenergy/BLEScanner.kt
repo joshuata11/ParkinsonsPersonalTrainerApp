@@ -186,7 +186,7 @@ class BLEScanner {
                 }
 
 
-                println("Services discovered for device: " + device.name)
+                //println("Services discovered for device: " + device.name)
 
             }
 
