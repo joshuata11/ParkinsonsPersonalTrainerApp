@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
@@ -22,6 +23,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.SeekBar
@@ -37,8 +39,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.ppt.databinding.ActivityMainBinding
-
-
+import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,11 +47,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bluetoothAdapter: BluetoothAdapter
 
-
+    private val calendar = Calendar.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.fragment_home)
+        findViewById<TextView>(R.id.WorkoutInfo).setOnClickListener {
+            //DatePickerDialog(this, this, 2025, 4, 15).show()
+        }
+
         val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val darkmode = sharedPreferences.getBoolean("dark", false)
@@ -86,6 +93,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+    fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int){
+        Log.e("Calendar","$year -- $month -- dayOfMonth") //prints the chosen date
     }
 
     fun checkBLEPermission() {

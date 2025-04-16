@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Button
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.databinding.ActivityMainBinding
@@ -30,7 +31,6 @@ class Home : Fragment() {
     //private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         //binding = ActivityMainBinding.inflate(layoutInflater)
         //setContentView(binding.root)
         //binding.calendarView.setOnDateChangeListener
@@ -65,14 +65,11 @@ class Home : Fragment() {
         checkBLEPermission()
 
 
-        val btn = view.findViewById<Button>(R.id.BTBTN)
+
         val bleScanner = BLEScanner()
 
 
-        btn.setOnClickListener(){
-            val v = bleScanner.scanBLEDecivce()
 
-        }
 
 
 
