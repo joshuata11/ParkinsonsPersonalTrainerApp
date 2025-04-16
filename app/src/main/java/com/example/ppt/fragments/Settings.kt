@@ -1,4 +1,4 @@
-package com.example.ppt
+package com.example.ppt.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.ppt.R
+import com.example.ppt.fragments.AboutSettings
+import com.example.ppt.fragments.AccountSettings
+import com.example.ppt.fragments.SensorSettings
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,71 +49,30 @@ class Settings : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
+        val accbtn = view.findViewById<ImageButton>(R.id.AccountButton)
+        val senbtn = view.findViewById<ImageButton>(R.id.SensorButton)
+        val abobtn = view.findViewById<ImageButton>(R.id.AboutButton)
 
-        val logoutbtn = view.findViewById<Button>(R.id.Logout)
-        val themebtn = view.findViewById<Button>(R.id.DarkorLight)
-        val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val darkmode = sharedPreferences.getBoolean("dark", false)
-        var isdarkmodeon = false
-
-
-
-
-        logoutbtn.setOnClickListener(){
-            editor.putBoolean("rememberKey", false)
-            editor.apply()
-            val intent = Intent(this@Settings.requireContext(), LoginScreen::class.java)
-            println("Value of remember key is" + sharedPreferences.getBoolean("rememberKey", false))
-            startActivity(intent)
+        accbtn.setOnClickListener() {
+            switchFragment(AccountSettings())
         }
 
-        if(darkmode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            isdarkmodeon = true
-            themebtn.setText("Enable Light Mode")
-
-
-        }
-        else{
-            isdarkmodeon = false
-            themebtn.setText("Enable Dark Mode")
+        senbtn.setOnClickListener() {
+            switchFragment(SensorSettings())
         }
 
-
-        themebtn.setOnClickListener(){
-            if(isdarkmodeon){
-                requireActivity().window.setWindowAnimations(R.style.WindowAnimationFade)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editor.putBoolean("dark", false)
-                editor.apply()
-                themebtn.setText("Enable Dark Mode")
-                isdarkmodeon = false
-                val intent = Intent(this@Settings.requireContext(), MainActivity::class.java)
-                startActivity(intent)
-
-
-
-            }
-            else {
-                requireActivity().window.setWindowAnimations(R.style.WindowAnimationFade)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editor.putBoolean("dark", true)
-                editor.apply()
-                themebtn.setText("Disable Dark Mode")
-                isdarkmodeon = true
-                val intent = Intent(this@Settings.requireContext(), MainActivity::class.java)
-                startActivity(intent)
-
-
-            }
-
+        abobtn.setOnClickListener() {
+            switchFragment(AboutSettings())
         }
 
         return view
     }
 
-
+    fun switchFragment(fragment: Fragment){
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frame_layout, fragment ).commit()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }

@@ -1,5 +1,6 @@
-package com.example.ppt
+package com.example.ppt.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.ImageButton
+import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.ppt.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -15,14 +23,14 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [WalkingFragment.newInstance] factory method to
+ * Use the [Settings.newInstance] factory method to
  * create an instance of this fragment.
  */
-class WalkingFragment : Fragment() {
+class AboutSettings : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var ongoing = false
+    var changedMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,28 +45,12 @@ class WalkingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val pageview = inflater.inflate(R.layout.fragment_walking, container, false)
-        val starter = pageview.findViewById<Button>(R.id.startses)
-        val ender = pageview.findViewById<Button>(R.id.endses)
-        //val getter = pageview.findViewById<Button>(R.id.getses)
+        val view = inflater.inflate(R.layout.fragment_setting_about, container, false)
 
-        starter.setOnClickListener {
-            if (!ongoing) {
-                val intent = Intent(context, TimerService::class.java)
-                context?.startService(intent)
-                ongoing = true
-            }
-        }
+        return view
+    }
 
-        ender.setOnClickListener {
-            if (ongoing) {
-                val intent = Intent(context, TimerService::class.java)
-                context?.stopService(intent)
-                ongoing = false
-            }
-        }
-
-        return pageview
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }
 
     companion object {
@@ -68,12 +60,12 @@ class WalkingFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment ScrollingFragment.
+         * @return A new instance of fragment Settings.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            WalkingFragment().apply {
+            Settings().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
