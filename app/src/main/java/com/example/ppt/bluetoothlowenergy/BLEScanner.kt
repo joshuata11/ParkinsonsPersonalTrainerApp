@@ -15,10 +15,15 @@ import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import com.example.ppt.fragments.Home
+import com.example.ppt.fragments.WalkingFragment
+import com.example.ppt.fragments.writeData
 import com.example.ppt.sensor_enums.PPT_LL
 import com.example.ppt.sensor_enums.PPT_LW
 import com.example.ppt.sensor_enums.PPT_RL
 import com.example.ppt.sensor_enums.PPT_RW
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 class BLEScanner {
@@ -41,6 +46,8 @@ class BLEScanner {
     private var rlgyroscopeCharUUID: UUID? = null
     private var rlvibrationUUID: UUID? = null
 
+    val targetNames = setOf("PPT_LW1", "PPT_RW", "PPT_LL", "PPT_RL")
+
 
     private val scanResults = mutableListOf<BluetoothDevice>()
 
@@ -51,9 +58,12 @@ class BLEScanner {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val indexQuery = scanResults.indexOfFirst { result.device.address == result.device.address }
 
+            //this only looks for devices in our targetNames set declared above
             val device = result.device
-            if(!scanResults.contains(device)){
-                scanResults.add(device)
+            if(device.name in targetNames) {
+                if (!scanResults.contains(device)) {
+                    scanResults.add(device)
+                }
             }
 
             BLEDeviceDataO.setList(scanResults)
@@ -63,6 +73,18 @@ class BLEScanner {
         override fun onScanFailed(errorCode: Int) {
             Log.e("ScanCallback", "onScanFailed: code $errorCode")
         }
+    }
+
+
+
+    @SuppressLint("MissingPermission")
+    fun disconnectGattServer() {
+        gatt?.let { gatt ->
+            gatt.disconnect()
+            gatt.close()
+            println("Destroyed GATT")
+        }
+        gatt = null
     }
 
 
@@ -79,10 +101,13 @@ class BLEScanner {
 
                     if (gatt != null) {
                         gatt.discoverServices()
+                        BLEDeviceDataO.setGatt(gatt)
+
                     }
 
                 }else if(newState == BluetoothProfile.STATE_DISCONNECTED){
                     println("Disconnected from device: " + device.name)
+                    connectedDevices.remove(device)
                 }
             }
 
@@ -91,15 +116,12 @@ class BLEScanner {
             override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
 
 
-
-                val targetNames = setOf("PPT_LW", "PPT_RW", "PPT_LL", "PPT_RL")
-
                 connectedDevices.forEach { device ->
                     val name = device.name
                     if (name != null && name in targetNames) {
                         // Handle each matched device name
                         when (name) {
-                            "PPT_LW" -> {
+                            "PPT_LW1" -> {
                                 imuServiceUUID = PPT_LW.ACCELEROMETER.serviceUUID//UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
                                 lwaccelerometerUUID = PPT_LW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
                                 lwgyroscopeCharUUID = PPT_LW.GYROSCOPE.characteristicUUID
@@ -128,7 +150,7 @@ class BLEScanner {
                                 rlvibrationUUID = PPT_RL.VIBRATION.serviceUUID
                             }
                         }
-                    }
+                   }
                 }
 
 
@@ -192,10 +214,8 @@ class BLEScanner {
             ) {
                 val uuid = characteristic?.uuid.toString()
                 val value = characteristic?.value?.toString(Charsets.UTF_8)
-                /*if (gatt != null) {
-                    sendVibrationCommand()
-                }*/
 
+                //functions like a switch statement, but checks each condition instead of breaking after finding one
                 when (uuid) {
 
                     PPT_LW.ACCELEROMETER.characteristicUUID.toString() -> { // Accelerometer
@@ -205,7 +225,10 @@ class BLEScanner {
                                 val x = parts?.get(0)?.toFloatOrNull()
                                 val y = parts.get(1)?.toFloatOrNull()
                                 val z = parts.get(2)?.toFloatOrNull()
-                                println("Accelerometer for device " + connectedDevices[0].name +": X: $x, Y: $y, Z: $z")
+                                if(BLEDeviceDataO.getCheckBox()) {
+                                    writeData.writeSensorDataToCsv("Accelerometer ", x, y, z)
+                                }
+                                println("Accelerometer for device " + PPT_LW.name +": X: $x, Y: $y, Z: $z")
                             }
                         }
                     }
@@ -218,10 +241,83 @@ class BLEScanner {
                                 val x = parts[0].toFloatOrNull()
                                 val y = parts[1].toFloatOrNull()
                                 val z = parts[2].toFloatOrNull()
-                                println("Gyroscope for device " + connectedDevices[0].name +": X: $x, Y: $y, Z: $z")
+                                if(BLEDeviceDataO.getCheckBox()) {
+                                    writeData.writeSensorDataToCsv("Gyroscope ", x, y, z)
+                                }
+                                println("Gyroscope for device " + PPT_LW.name +": X: $x, Y: $y, Z: $z")
                             }
                         }
                     }
+                    PPT_RW.ACCELEROMETER.characteristicUUID.toString() -> { // Accelerometer
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts?.get(0)?.toFloatOrNull()
+                                val y = parts.get(1)?.toFloatOrNull()
+                                val z = parts.get(2)?.toFloatOrNull()
+                                println("Accelerometer for device " + PPT_RW.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+
+
+                    PPT_RW.GYROSCOPE.characteristicUUID.toString() -> { // Gyroscope
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts[0].toFloatOrNull()
+                                val y = parts[1].toFloatOrNull()
+                                val z = parts[2].toFloatOrNull()
+                                println("Gyroscope for device " + PPT_RW.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+                    PPT_LL.ACCELEROMETER.characteristicUUID.toString() -> { // Accelerometer
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts?.get(0)?.toFloatOrNull()
+                                val y = parts.get(1)?.toFloatOrNull()
+                                val z = parts.get(2)?.toFloatOrNull()
+
+                                println("Accelerometer for device " + PPT_LL.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+                    PPT_LL.GYROSCOPE.characteristicUUID.toString() -> { // Gyroscope
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts[0].toFloatOrNull()
+                                val y = parts[1].toFloatOrNull()
+                                val z = parts[2].toFloatOrNull()
+                                println("Gyroscope for device " + PPT_LL.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+                    PPT_RL.ACCELEROMETER.characteristicUUID.toString() -> { // Accelerometer
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts?.get(0)?.toFloatOrNull()
+                                val y = parts.get(1)?.toFloatOrNull()
+                                val z = parts.get(2)?.toFloatOrNull()
+                                println("Accelerometer for device " + PPT_RL.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+                    PPT_RL.GYROSCOPE.characteristicUUID.toString() -> { // Gyroscope
+                        val parts = value?.split(",")
+                        if (parts != null) {
+                            if (parts.size == 3) {
+                                val x = parts[0].toFloatOrNull()
+                                val y = parts[1].toFloatOrNull()
+                                val z = parts[2].toFloatOrNull()
+                                println("Gyroscope for device " + PPT_RL.name +": X: $x, Y: $y, Z: $z")
+                            }
+                        }
+                    }
+
             }
 
         }
@@ -231,15 +327,19 @@ class BLEScanner {
     }
 
 
+
+
     var alreadysent = 0
     val byte = ByteArray(1)
     @SuppressLint("MissingPermission")
     fun sendVibrationCommand() {
 
-        //UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214")
+
+
+
         val characteristicUUID = PPT_LW.VIBRATION.characteristicUUID//UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
 
-        val service = gatt?.getService(lwvibrationUUID)
+        val service = BLEDeviceDataO.getGatt()?.getService(PPT_LW.VIBRATION.serviceUUID)
         if (service == null) {
             println("Service is NULL")
             return
@@ -258,7 +358,7 @@ class BLEScanner {
           //  if (alreadysent == 0) {
              //   Handler(Looper.getMainLooper()).postDelayed({
                     println("SENDING VIBRATION")
-                    val result = gatt?.writeCharacteristic(characteristic)
+                    val result = BLEDeviceDataO.getGatt()?.writeCharacteristic(characteristic)
                     alreadysent = 1
 
             //    }, 50)

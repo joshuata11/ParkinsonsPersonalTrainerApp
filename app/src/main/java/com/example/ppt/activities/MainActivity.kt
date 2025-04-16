@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.ppt.fragments.Home
 import com.example.ppt.R
+import com.example.ppt.bluetoothlowenergy.BLEScanner
 import com.example.ppt.fragments.Settings
 import com.example.ppt.fragments.Workout
 import com.example.ppt.databinding.ActivityMainBinding
@@ -66,6 +67,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        BLEScanner().disconnectGattServer()
     }
 
 

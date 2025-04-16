@@ -14,7 +14,11 @@ enum class PPT_RL(val serviceUUID: UUID, val characteristicUUID: UUID) {
     VIBRATION(
         UUID.fromString("19B10000-E8F2-537E-4F6C-D104768A1214"),
         UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
-    )
+    );
+
+    companion object {
+        const val name = "PPT_RL"
+    }
 
 
 }

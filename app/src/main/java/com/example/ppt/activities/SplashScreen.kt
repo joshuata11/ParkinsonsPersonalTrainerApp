@@ -1,10 +1,12 @@
 package com.example.ppt.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.*
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.R
 
 object AppSession {
@@ -25,8 +27,17 @@ class SplashScreen : AppCompatActivity() {
 
             val setup = sharedPref.getBoolean("setupKey", true)
             val remember = sharedPref.getBoolean("rememberKey", false)
-            val darkmode = sharedPref.getBoolean("dark", false)
-            val editor = sharedPref.edit()
+            val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+            val darkmode = sharedPreferences.getBoolean("dark", false)
+
+
+            if(darkmode){
+                println("DARK MODE ON")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
 
             println("Value of count is" + count)
 
@@ -50,7 +61,6 @@ class SplashScreen : AppCompatActivity() {
                 val intent = Intent(this, LoginScreen::class.java)
                 startActivity(intent)
             } else{
-                AppSession.isFirstLaunch = false
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }

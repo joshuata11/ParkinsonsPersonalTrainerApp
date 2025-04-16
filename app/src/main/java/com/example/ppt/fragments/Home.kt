@@ -2,19 +2,25 @@ package com.example.ppt.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.ScanResult
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +30,7 @@ import com.example.ppt.bluetoothlowenergy.BLEScanner
 import com.example.ppt.databinding.FragmentHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
 
 /**
  * A simple [Fragment] subclass.
@@ -40,6 +47,15 @@ class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     //private var devices = mutableListOf<ScanResult>()
     private var fragmentContext: Context? = null
+    val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    private val enableBluetoothLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d("BLE", "Bluetooth enabled")
+            } else {
+                Log.d("BLE", "Bluetooth not enabled by user")
+            }
+        }
 
 
 
@@ -72,17 +88,34 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val context = requireContext()
+        /*val context = requireContext()
+        val fileName = "sensor_data.csv"
+        val file = File(context.getExternalFilesDir(null), fileName)
+        file.writeText("timestamp,sensor,x,y,z")*/
 
         checkBLEPermission()
+        requestBLEenable()
+
         val bleScanner = BLEScanner()
 
         val btn = view.findViewById<Button>(R.id.BTBTN)
+
         val btn2 = view.findViewById<Button>(R.id.VIBRATION)
+
+
+        /*if(BLEDeviceDataO.getCheckBox()){
+            writeSensorDataToCsv(file, BLEDeviceDataO.getSensorName(), BLEDeviceDataO.getAccellist())
+            writeSensorDataToCsv(file, BLEDeviceDataO.getSensorName(), BLEDeviceDataO.getGyrolist())
+        }*/
+
+
+
 
         btn2.setOnClickListener(){
             bleScanner.sendVibrationCommand()
         }
+
+
 
 
 
@@ -157,6 +190,17 @@ class Home : Fragment() {
 
 
         return view
+    }
+
+    fun writeSensorDataToCsv(file: File, sensorType: String, data: List<Float>) {
+        val timestamp = System.currentTimeMillis()
+        val dataLine = buildString {
+            append("$timestamp,$sensorType")
+            data.forEach { append(",$it") }
+            append("\n")
+        }
+
+        file.appendText(dataLine)
     }
 
     override fun onAttach(context: Context) {
@@ -272,6 +316,17 @@ class Home : Fragment() {
             }
         }
     }
+
+    private fun requestBLEenable() {
+        if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled) {
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            enableBluetoothLauncher.launch(enableBtIntent)
+        }
+    }
+
+
+
+
 
     companion object {
         /**
