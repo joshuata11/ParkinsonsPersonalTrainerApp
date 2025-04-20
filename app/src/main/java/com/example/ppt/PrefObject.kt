@@ -71,4 +71,14 @@ object PrefObject {
         editor.putString("activityKey",activity)
         editor.apply()
     }
+
+    fun getTimer(): Long {
+        return sharedPref.getLong("timerKey", 0)
+    }
+
+    fun setTimer(timer: Long) {
+        val editor = sharedPref.edit()
+        editor.putLong("timerKey",timer)
+        editor.apply()
+    }
 }
