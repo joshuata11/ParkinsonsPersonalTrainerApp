@@ -96,7 +96,7 @@ class WalkingFragment : Fragment() {
             if (!PrefObject.getSession()) {
                 //if (!ongoing) {
                 val intent = Intent(context, TimerService::class.java)
-                context?.startService(intent)
+                context.startService(intent)
                 //ongoing = true
                 PrefObject.setSession(true)
             }
@@ -106,7 +106,7 @@ class WalkingFragment : Fragment() {
             if (PrefObject.getSession()) {
                 //if (ongoing) {
                 val intent = Intent(context, TimerService::class.java)
-                context?.stopService(intent)
+                context.stopService(intent)
                 //ongoing = false
                 PrefObject.setSession(false)
             }
