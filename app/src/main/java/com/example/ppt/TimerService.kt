@@ -16,7 +16,8 @@ class TimerService: Service(){
         override fun run() {
             timeElapsed = System.currentTimeMillis() - timeStarted
             seconds = timeElapsed/1000
-            println(seconds.toString() + " seconds")
+            PrefObject.setTimer(seconds)
+            println("$seconds seconds")
             val intent = Intent("TIMER_UPDATE")
             intent.putExtra("time", timeElapsed)
             sendBroadcast(intent)

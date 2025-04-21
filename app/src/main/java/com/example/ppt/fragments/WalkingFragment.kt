@@ -40,6 +40,7 @@ class WalkingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context?.let { PrefObject.init(it) }
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -95,7 +96,7 @@ class WalkingFragment : Fragment() {
             if (!PrefObject.getSession()) {
                 //if (!ongoing) {
                 val intent = Intent(context, TimerService::class.java)
-                context?.startService(intent)
+                context.startService(intent)
                 //ongoing = true
                 PrefObject.setSession(true)
             }
@@ -105,7 +106,7 @@ class WalkingFragment : Fragment() {
             if (PrefObject.getSession()) {
                 //if (ongoing) {
                 val intent = Intent(context, TimerService::class.java)
-                context?.stopService(intent)
+                context.stopService(intent)
                 //ongoing = false
                 PrefObject.setSession(false)
             }
