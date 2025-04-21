@@ -81,4 +81,24 @@ object PrefObject {
         editor.putLong("timerKey",timer)
         editor.apply()
     }
+
+    fun getDaily(key: String): Long {
+        return sharedPref.getLong(key, 0)
+    }
+
+    fun setDaily(key: String, timer: Long) {
+        val editor = sharedPref.edit()
+        editor.putLong(key,timer+getDaily(key))
+        editor.apply()
+    }
+
+    fun getGoal(): Long {
+        return sharedPref.getLong("goalKey", 60)
+    }
+
+    fun setGoal(goal: Long) {
+        val editor = sharedPref.edit()
+        editor.putLong("goalKey",goal)
+        editor.apply()
+    }
 }

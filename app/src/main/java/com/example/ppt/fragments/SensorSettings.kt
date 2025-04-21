@@ -15,9 +15,11 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.ppt.PrefObject
 import com.example.ppt.R
 import com.example.ppt.bluetoothlowenergy.BLEDeviceDataO
 import com.example.ppt.bluetoothlowenergy.BLEScanner
@@ -40,6 +42,7 @@ class SensorSettings : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context?.let { PrefObject.init(it) }
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -56,8 +59,22 @@ class SensorSettings : Fragment() {
 
         val btn = view.findViewById<Button>(R.id.connectSensor)
         val btn2 = view.findViewById<Button>(R.id.vibrator)
+        val disconnect = view.findViewById<Button>(R.id.disconnect)
+        val goalbut = view.findViewById<Button>(R.id.goalbutton)
+        val curgoal = view.findViewById<TextView>(R.id.goaltime)
+        var cgoal = PrefObject.getGoal()
+        curgoal.setText("$cgoal")
+        val newgoal = view.findViewById<EditText>(R.id.newgoal)
 
         val bleScanner = BLEScanner()
+
+        goalbut.setOnClickListener() {
+            if (newgoal.text.toString().isNotEmpty()) {
+                PrefObject.setGoal(newgoal.text.toString().toLong())
+                cgoal = PrefObject.getGoal()
+                curgoal.setText("$cgoal")
+            }
+        }
 
         btn.setOnClickListener(){
 

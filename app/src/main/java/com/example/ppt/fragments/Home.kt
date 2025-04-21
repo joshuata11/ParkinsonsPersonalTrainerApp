@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.ScanResult
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -26,6 +27,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.ppt.PrefObject
 import com.example.ppt.R
 import com.example.ppt.bluetoothlowenergy.BLEDeviceDataO
 import com.example.ppt.bluetoothlowenergy.BLEScanner
@@ -66,29 +68,46 @@ class Home : Fragment() {
     private val currentYear = calendar.get(Calendar.YEAR)
     private val currentMonth = calendar.get(Calendar.MONTH)
     private val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    private var total: Long = 0
+    private var goal: Long = 0
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val textViewDate = view.findViewById<TextView>(R.id.WorkoutInfo)
+        val workoutMins = view.findViewById<TextView>(R.id.completed)
 
         val date = calendarView.date
         val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val dateCurrent = dateFormat.format(Date(date))
-        textViewDate.text = "Workouts completed today $dateCurrent :"
+        total = PrefObject.getDaily(dateCurrent)
+        goal = PrefObject.getGoal()
+        if (total < goal) {
+            textViewDate.text = "You haven't completed your workout for $dateCurrent"
+            workoutMins.text = "$total out of $goal"
+        }    else {
+            textViewDate.text = "You've completed your workout for $dateCurrent"
+            workoutMins.text = "$total"
+        }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            val selectedDate = "${month + 1}/$dayOfMonth/$year"
-            textViewDate.text = "Workouts completed on $selectedDate :"
-            if(year == currentYear && month == currentMonth && dayOfMonth == currentDay){
-                textViewDate.text = "Workouts completed today $selectedDate :"
+            var selectedDate = "${month + 1}/$dayOfMonth/$year"
+            if (month < 9) {
+                selectedDate = "0${month + 1}/$dayOfMonth/$year"
+            }
+            total = PrefObject.getDaily(selectedDate)
+            if (total < goal) {
+                textViewDate.text = "You haven't completed your workout for $selectedDate"
+                workoutMins.text = "$total out of $goal"
+            }    else {
+                textViewDate.text = "You've completed your workout for $selectedDate"
+                workoutMins.text = "$total"
             }
         }
 
     }
-
-
 
 
 
@@ -105,6 +124,7 @@ class Home : Fragment() {
         }
 
         super.onCreate(savedInstanceState)
+        context?.let { PrefObject.init(it) }
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)

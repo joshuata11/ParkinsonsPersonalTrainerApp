@@ -12,8 +12,4 @@ public final class TimerReceiver : BroadcastReceiver() {
         data = intent?.getLongExtra("com.TIME", 0)!!;
         println("received time $data")
     }
-
-    fun getData(): Long {
-        return data
-    }
 }

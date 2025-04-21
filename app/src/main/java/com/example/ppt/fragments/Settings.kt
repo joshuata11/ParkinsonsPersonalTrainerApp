@@ -1,23 +1,12 @@
 package com.example.ppt.fragments
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.ImageButton
-import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.R
-import com.example.ppt.fragments.AboutSettings
-import com.example.ppt.fragments.AccountSettings
-import com.example.ppt.fragments.SensorSettings
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
