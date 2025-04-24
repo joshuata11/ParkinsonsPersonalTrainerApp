@@ -75,9 +75,10 @@ class WalkingFragment : Fragment() {
         check.setOnClickListener(){
             if(check.isChecked ){
                 check.text = "Stop Collecting Data"
-                val fileName = "sensor_data_$militarytime.csv"
+                val activitytype = PrefObject.getActivity()
+                val fileName = "PPT_"+activitytype+"_$militarytime.csv"
                 file = File(context.getExternalFilesDir(null), fileName)
-                println(file.absoluteFile)
+                //println(file.absoluteFile)
                 file.writeText("timestamp,sensor,x,y,z\n")
                 writeData.setFile(file)
                 BLEDeviceDataO.setCheckBox(true)

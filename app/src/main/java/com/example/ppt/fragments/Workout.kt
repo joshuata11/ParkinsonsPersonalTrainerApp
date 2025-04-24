@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
+import com.example.ppt.PrefObject
 import com.example.ppt.R
 
 /**
@@ -23,6 +24,7 @@ class Workout : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context?.let{PrefObject.init(it)}
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -50,15 +52,19 @@ class Workout : Fragment() {
         val scrollingFragment = WalkingFragment()
 
         walkingbtn.setOnClickListener{
+            PrefObject.setActivity("Walking")
             switchFragment(scrollingFragment)
         }
         bikingbtn.setOnClickListener{
+            PrefObject.setActivity("Biking")
             switchFragment(scrollingFragment)
         }
         lsvtbtn.setOnClickListener{
+            PrefObject.setActivity("LSVT")
             switchFragment(scrollingFragment)
         }
         restingbtn.setOnClickListener{
+            PrefObject.setActivity("Resting")
             switchFragment(scrollingFragment)
         }
         return view
