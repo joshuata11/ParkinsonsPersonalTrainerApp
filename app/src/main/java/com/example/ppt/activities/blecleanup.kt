@@ -14,7 +14,7 @@ class blecleanup : Application(), ComponentCallbacks2 {
     }
 
     override fun onTrimMemory(level: Int) {
-        super<Application>.onTrimMemory(level)
+        super.onTrimMemory(level)
         if (level == TRIM_MEMORY_UI_HIDDEN) {
             // App is going to background (swipe away, etc.)
             bleManager.disconnectGattServer()
@@ -22,7 +22,7 @@ class blecleanup : Application(), ComponentCallbacks2 {
     }
 
     override fun onLowMemory() {
-        super<Application>.onLowMemory()
+        super.onLowMemory()
         bleManager.disconnectGattServer()
     }
 

@@ -420,9 +420,9 @@ class BLEScanner {
 
 
 
-        val characteristicUUID = PPT_LW.VIBRATION.characteristicUUID//UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
+        val characteristicUUID = PPT_LL.VIBRATION.characteristicUUID//UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
 
-        val service = BLEDeviceDataO.getGatt()?.getService(PPT_LW.VIBRATION.serviceUUID)
+        val service = BLEDeviceDataO.getGatt()?.getService(PPT_LL.VIBRATION.serviceUUID)
         if (service == null) {
             println("Service is NULL")
             return
