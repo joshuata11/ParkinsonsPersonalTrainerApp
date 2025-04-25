@@ -27,7 +27,7 @@ class SplashScreen : AppCompatActivity() {
 
             val setup = sharedPref.getBoolean("setupKey", true)
             val remember = sharedPref.getBoolean("rememberKey", false)
-            val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+            /*val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
             val darkmode = sharedPreferences.getBoolean("dark", false)
 
 
@@ -37,7 +37,7 @@ class SplashScreen : AppCompatActivity() {
             }
             else{
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            }*/
 
             println("Value of count is" + count)
 
@@ -56,7 +56,7 @@ class SplashScreen : AppCompatActivity() {
             if (setup) {
                 val intent = Intent(this, UserSetup::class.java)
                 startActivity(intent)
-                onDestroy()
+                //onDestroy()
             } else if (!remember ) {
                 val intent = Intent(this, LoginScreen::class.java)
                 startActivity(intent)
