@@ -87,7 +87,7 @@ class AccountSettings : Fragment() {
             startActivity(intent)
         }
 
-        if(darkmode){
+        /*if(darkmode){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             isdarkmodeon = true
             themebtn.setText("Enable Light Mode")
@@ -127,7 +127,7 @@ class AccountSettings : Fragment() {
 
             }
 
-        }
+        }*/
 
         return view
     }

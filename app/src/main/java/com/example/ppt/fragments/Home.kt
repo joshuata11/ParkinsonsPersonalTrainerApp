@@ -116,12 +116,7 @@ class Home : Fragment() {
         val darkmode = sharedPreferences.getBoolean("dark", false)
 
 
-        if(darkmode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         super.onCreate(savedInstanceState)
         context?.let { PrefObject.init(it) }

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.ppt.PrefObject
 import com.example.ppt.R
@@ -52,6 +53,7 @@ class WalkingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         // Inflate the layout for this fragment
         val pageview = inflater.inflate(R.layout.fragment_walking, container, false)
         val starter = pageview.findViewById<Button>(R.id.startses)

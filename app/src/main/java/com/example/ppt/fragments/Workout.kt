@@ -61,7 +61,7 @@ class Workout : Fragment() {
         }
         lsvtbtn.setOnClickListener{
             PrefObject.setActivity("LSVT")
-            switchFragment(scrollingFragment)
+            switchFragment(LSVTFragment())
         }
         restingbtn.setOnClickListener{
             PrefObject.setActivity("Resting")

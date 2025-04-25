@@ -27,6 +27,8 @@ class SplashScreen : AppCompatActivity() {
 
             val setup = sharedPref.getBoolean("setupKey", true)
             val remember = sharedPref.getBoolean("rememberKey", false)
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             /*val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
             val darkmode = sharedPreferences.getBoolean("dark", false)
 
