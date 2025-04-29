@@ -53,6 +53,7 @@ class Home : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentHomeBinding
+
     //private var devices = mutableListOf<ScanResult>()
     private var fragmentContext: Context? = null
     val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
@@ -74,6 +75,7 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         val calendarView = view.findViewById<CalendarView>(R.id.calendarView)
         val textViewDate = view.findViewById<TextView>(R.id.WorkoutInfo)

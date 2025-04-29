@@ -86,6 +86,17 @@ object BLEDeviceDataO{
         return checkBox
     }
 
+    @SuppressLint("MissingPermission")
+    fun disconnectGattServer() {
+        println(gatt)
+        gatt?.let { gatt ->
+            gatt.disconnect()
+            gatt.close()
+            println("Destroyed GATT")
+        }
+        gatt = null
+    }
+
 
 
 

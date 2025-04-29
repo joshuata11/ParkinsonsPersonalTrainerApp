@@ -25,12 +25,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="89dp"
         android:text="Connect Sensors"
         android:textAlignment="center"
+        android:textColorLink="#673AB7"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sec1" />
 
@@ -39,12 +41,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="95dp"
         android:text="Vibrate Sensors"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectSensor" />
 
@@ -66,12 +69,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="73dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="73dp"
         android:text="Disconnect Sensors"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vibrator" />
 
@@ -130,4 +134,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goaltime" />
+
+    <TextView
+        android:id="@+id/BluetoothWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="If you cannot see any sensors, try turning Bluetooth on and off"
+        android:textColor="#FF0202"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connectSensor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,6 @@ class AccountSettings : Fragment() {
         val view = inflater.inflate(R.layout.fragment_settings_account, container, false)
 
         val logoutbtn = view.findViewById<Button>(R.id.logout)
-        val themebtn = view.findViewById<Button>(R.id.lightmode)
         val sharedPreferences = requireActivity().getSharedPreferences("Mode", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         val darkmode = sharedPreferences.getBoolean("dark", false)

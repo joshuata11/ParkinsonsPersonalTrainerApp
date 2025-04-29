@@ -1,10 +1,14 @@
 package com.example.ppt.fragments
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +16,24 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.MediaController
+import android.widget.TextView
 import android.widget.VideoView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.webkit.WebSettingsCompat
+import com.example.ppt.PrefObject
 import com.example.ppt.R
+import com.example.ppt.TimerService
+import com.example.ppt.bluetoothlowenergy.BLEDeviceDataO
+import java.io.File
+import java.io.FileInputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +49,9 @@ class LSVTFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var file: File
+    private lateinit var videoView: VideoView
+    var videoURL = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +61,7 @@ class LSVTFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("RequiresFeature")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,17 +69,96 @@ class LSVTFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_l_s_v_t, container, false)
+        val timestamp = System.currentTimeMillis()
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val militarytime = format.format(Date(timestamp))
+        val context = requireContext()
 
-        val webView = view.findViewById<WebView>(R.id.webview)
-        webView.settings.javaScriptEnabled = true
+        val starter = view.findViewById<Button>(R.id.startsesLSVT)
+        val ender = view.findViewById<Button>(R.id.endsesLSVT)
+        val check = view.findViewById<CheckBox>(R.id.checkBoxLSVT)
+        val fileDescription = view.findViewById<TextView>(R.id.FileDescriptionLSVT)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            webView.settings.forceDark = WebSettings.FORCE_DARK_OFF
+
+
+
+        videoView = view.findViewById(R.id.videoView);
+
+        // on below line we are creating
+        // uri for our video view.
+        val uri: Uri = Uri.parse(videoURL)
+
+        // on below line we are setting
+        // video uri for our video view.
+        videoView.setVideoURI(uri)
+
+        // on below line we are creating variable
+        // for media controller and initializing it.
+        val mediaController = MediaController(requireContext())
+
+        // on below line we are setting anchor
+        // view for our media controller.
+        mediaController.setAnchorView(videoView)
+
+        // on below line we are setting media player
+        // for our media controller.
+        mediaController.setMediaPlayer(videoView)
+
+        // on below line we are setting media
+        // controller for our video view.
+        videoView.setMediaController(mediaController)
+
+        // on below line we are
+        // simply starting our video view.
+        videoView.start()
+
+
+        if(BLEDeviceDataO.getCheckBox()){
+            check.isChecked = true
+            check.text = "Stop Collecting Data"
+            fileDescription.isVisible = true
         }
 
-        webView.webViewClient = WebViewClient()
-        webView.setBackgroundColor(Color.WHITE)
-        webView.loadUrl("https://www.youtube.com/embed/fpTqcWs2NUY?si=uYZlcU_YDCRhsETv")
+        //this can be improved by moving it to an object so each fragments that uses the check can just call the object
+        check.setOnClickListener(){
+            if(check.isChecked ){
+                check.text = "Stop Collecting Data"
+                fileDescription.isVisible = true
+                val activitytype = PrefObject.getActivity()
+                val fileName = "PPT_"+activitytype+"_$militarytime.csv"
+                file = File(context.getExternalFilesDir(null), fileName)
+                //println(file.absoluteFile)
+                file.writeText("timestamp,sensor,x,y,z\n")
+                writeData.setFile(file)
+                BLEDeviceDataO.setCheckBox(true)
+            }else{
+                check.text = "Start Collecting Data"
+                fileDescription.isVisible = false
+                moveFileToDownloads(requireContext(), writeData.getFile())
+                BLEDeviceDataO.setCheckBox(false)
+            }
+        }
+
+        starter.setOnClickListener {
+
+            if (!PrefObject.getSession()) {
+                //if (!ongoing) {
+                val intent = Intent(context, TimerService::class.java)
+                context.startService(intent)
+                //ongoing = true
+                PrefObject.setSession(true)
+            }
+        }
+
+        ender.setOnClickListener {
+            if (PrefObject.getSession()) {
+                //if (ongoing) {
+                val intent = Intent(context, TimerService::class.java)
+                context.stopService(intent)
+                //ongoing = false
+                PrefObject.setSession(false)
+            }
+        }
 
 
 
@@ -64,6 +166,36 @@ class LSVTFragment : Fragment() {
 
 
         return  view
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun moveFileToDownloads(context: Context, sourceFile: File) {
+        if (!sourceFile.exists()) {
+
+            return
+        }
+
+        val resolver = context.contentResolver
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, sourceFile.name)
+            put(MediaStore.Downloads.MIME_TYPE, "text/csv")
+            put(MediaStore.Downloads.RELATIVE_PATH, "Download/MySensorData")
+            put(MediaStore.Downloads.IS_PENDING, 1)
+        }
+
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+        uri?.let {
+            resolver.openOutputStream(it)?.use { outputStream ->
+                val inputStream = FileInputStream(sourceFile)
+                inputStream.copyTo(outputStream)
+                inputStream.close()
+            }
+
+            contentValues.clear()
+            contentValues.put(MediaStore.Downloads.IS_PENDING, 0)
+            resolver.update(it, contentValues, null, null)
+        }
     }
 
     companion object {

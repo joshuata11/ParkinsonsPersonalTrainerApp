@@ -1,3 +1,4 @@
+
 package com.example.ppt.activities
 
 import android.content.Context
@@ -29,7 +30,8 @@ class SplashScreen : AppCompatActivity() {
             val remember = sharedPref.getBoolean("rememberKey", false)
 
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            /*val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+
+            val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
             val darkmode = sharedPreferences.getBoolean("dark", false)
 
 
@@ -39,21 +41,14 @@ class SplashScreen : AppCompatActivity() {
             }
             else{
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }*/
+            }
+
 
             println("Value of count is" + count)
 
 
 
             println("Value of remember from splash screen " + remember)
-
-            /*
-            val editor = sharedPref.edit()
-            editor.putString("userKey","UserTest")
-            editor.putString("passKey","Pass")
-            editor.apply()
-            */
-
 
             if (setup) {
                 val intent = Intent(this, UserSetup::class.java)

@@ -127,24 +127,12 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="32dp"
         android:text="Logout"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changepass" />
-
-    <Button
-        android:id="@+id/lightmode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="52dp"
-        android:text="Change Lighting"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/logout"
         app:layout_constraintTop_toBottomOf="@+id/changepass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

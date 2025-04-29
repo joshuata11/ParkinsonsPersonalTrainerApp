@@ -34,23 +34,28 @@
 
 
         android:screenOrientation="portrait"
-        tools:targetApi="34">
+        tools:targetApi="34"
+        tools:ignore="DiscouragedApi">
         <service android:name=".TimerService" />
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="uiMode"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
             android:name=".activities.LoginScreen"
             android:configChanges="uiMode"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
             android:name=".activities.UserSetup"
             android:configChanges="uiMode"
+            android:screenOrientation="portrait"
             android:exported="false"/>
         <activity
             android:name=".activities.SplashScreen"
             android:configChanges="uiMode"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

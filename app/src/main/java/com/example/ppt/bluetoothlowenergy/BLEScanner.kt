@@ -91,15 +91,7 @@ class BLEScanner {
 
 
 
-    @SuppressLint("MissingPermission")
-    fun disconnectGattServer() {
-        gatt?.let { gatt ->
-            gatt.disconnect()
-            gatt.close()
-            println("Destroyed GATT")
-        }
-        gatt = null
-    }
+
 
 
     val connectedDevices = mutableListOf<BluetoothDevice>()
@@ -145,7 +137,7 @@ class BLEScanner {
                                 lwservice = gatt?.getService(imuServiceUUID)
                                 lwaccelchar = lwservice?.getCharacteristic(lwaccelerometerUUID)
                                 lwgyrochar = lwservice?.getCharacteristic(lwgyroscopeCharUUID)
-                                //writeToDescriptor(gatt, lwaccelchar, descriptorUUID, lwgyrochar)
+                                writeToDescriptor(gatt, lwaccelchar, descriptorUUID, lwgyrochar)
 
                             }
 
@@ -154,6 +146,11 @@ class BLEScanner {
                                 rwaccelerometerUUID = PPT_RW.ACCELEROMETER.characteristicUUID//UUID.fromString("19b10000-e8f2-537e-4f6c-d104768a1215")
                                 rwgyroscopeCharUUID = PPT_RW.GYROSCOPE.characteristicUUID
                                 rwvibrationUUID = PPT_RW.VIBRATION.serviceUUID
+                                rwservice = gatt?.getService(imuServiceUUID)
+                                rwaccelchar = rwservice?.getCharacteristic(rwaccelerometerUUID)
+                                rwgyrochar = rwservice?.getCharacteristic(rwgyroscopeCharUUID)
+                                writeToDescriptor(gatt, rwaccelchar, descriptorUUID, rwgyrochar)
+                                println("Made it to PPT_RW")
                             }
 
                             "PPT_LL" -> {
@@ -409,6 +406,17 @@ class BLEScanner {
             nextDescriptorToWrite = gyroDesc
 
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun disconnectGattServer() {
+        println(gatt)
+        gatt?.let { gatt ->
+            gatt.disconnect()
+            gatt.close()
+            println("Destroyed GATT")
+        }
+        gatt = null
     }
 
 

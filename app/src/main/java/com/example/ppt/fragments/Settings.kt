@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +42,7 @@ class Settings : Fragment() {
         val accbtn = view.findViewById<ImageButton>(R.id.AccountButton)
         val senbtn = view.findViewById<ImageButton>(R.id.SensorButton)
         val abobtn = view.findViewById<ImageButton>(R.id.AboutButton)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         accbtn.setOnClickListener() {
             switchFragment(AccountSettings())

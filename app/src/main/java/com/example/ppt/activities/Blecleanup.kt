@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.ComponentCallbacks2
 import com.example.ppt.bluetoothlowenergy.BLEScanner
 
-class blecleanup : Application(), ComponentCallbacks2 {
+class Blecleanup : Application(), ComponentCallbacks2 {
 
     lateinit var bleManager: BLEScanner
 
