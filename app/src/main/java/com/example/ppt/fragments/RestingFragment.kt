@@ -98,12 +98,18 @@ class RestingFragment : Fragment() {
 
         starter.setOnClickListener {
 
+            val intent = Intent(context, TimerService::class.java)
             if (!PrefObject.getSession()) {
                 //if (!ongoing) {
-                val intent = Intent(context, TimerService::class.java)
+
                 context.startService(intent)
                 //ongoing = true
                 PrefObject.setSession(true)
+            }
+            else{
+                context.stopService(intent)
+
+                context.startService(intent)
             }
         }
 

@@ -63,6 +63,7 @@ class WalkingFragment : Fragment() {
         val getter = view.findViewById<Button>(R.id.valuebut)
         val check = view.findViewById<CheckBox>(R.id.checkBox)
         val fileDescription = view.findViewById<TextView>(R.id.FileDescription)
+        val timestarted = view.findViewById<TextView>(R.id.textView9)
 
         val context = requireContext()
         val timestamp = System.currentTimeMillis()
@@ -102,19 +103,26 @@ class WalkingFragment : Fragment() {
         //val getter = pageview.findViewById<Button>(R.id.getses)
 
         starter.setOnClickListener {
-
+            val intent = Intent(context, TimerService::class.java)
             if (!PrefObject.getSession()) {
                 //if (!ongoing) {
-                val intent = Intent(context, TimerService::class.java)
+
+               // timestarted.isVisible = true
                 context.startService(intent)
                 //ongoing = true
                 PrefObject.setSession(true)
+            }
+            else{
+                context.stopService(intent)
+
+                context.startService(intent)
             }
         }
 
         ender.setOnClickListener {
             if (PrefObject.getSession()) {
                 //if (ongoing) {
+                //timestarted.isVisible = false
                 val intent = Intent(context, TimerService::class.java)
                 context.stopService(intent)
                 //ongoing = false

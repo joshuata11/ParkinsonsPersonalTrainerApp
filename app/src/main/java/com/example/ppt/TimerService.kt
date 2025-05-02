@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import com.example.ppt.bluetoothlowenergy.BLEScanner
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -23,6 +24,10 @@ class TimerService: Service(){
             timeElapsed = System.currentTimeMillis() - timeStarted
             seconds = timeElapsed/1000
             PrefObject.setTimer(seconds)
+            println(PrefObject.getGoal() * 60)
+            if(seconds == PrefObject.getGoal() * 60){
+                BLEScanner().sendVibrationCommand()
+            }
             println("$seconds seconds")
             if (seconds - counter >= 60) {
                 PrefObject.setDaily(dateCurrent,1)
@@ -53,8 +58,10 @@ class TimerService: Service(){
     }
 
     override fun onDestroy() {
+        //println("CLOSING SERVICE")
         handler.removeCallbacks(runnable)
         PrefObject.setTimer(0)
+        //PrefObject.setSession(false)
         super.onDestroy()
     }
 }

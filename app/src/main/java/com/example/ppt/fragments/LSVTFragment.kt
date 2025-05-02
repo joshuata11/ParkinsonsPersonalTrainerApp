@@ -24,7 +24,6 @@ import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.webkit.WebSettingsCompat
 import com.example.ppt.PrefObject
 import com.example.ppt.R
 import com.example.ppt.TimerService
@@ -51,6 +50,9 @@ class LSVTFragment : Fragment() {
     private var param2: String? = null
     private lateinit var file: File
     private lateinit var videoView: VideoView
+    //This video is just a sample to show how you can get a URL, this does not work for youtube
+    //To view YouTube links use webview, but be careful it will change the color of your app if you have dark mode functionality
+    //currently could not figure out how to fix it
     var videoURL = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,12 +143,18 @@ class LSVTFragment : Fragment() {
 
         starter.setOnClickListener {
 
+            val intent = Intent(context, TimerService::class.java)
             if (!PrefObject.getSession()) {
                 //if (!ongoing) {
-                val intent = Intent(context, TimerService::class.java)
+
                 context.startService(intent)
                 //ongoing = true
                 PrefObject.setSession(true)
+            }
+            else{
+                context.stopService(intent)
+
+                context.startService(intent)
             }
         }
 
