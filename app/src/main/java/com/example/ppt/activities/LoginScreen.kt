@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import com.example.ppt.R
 
@@ -32,6 +33,7 @@ class LoginScreen : AppCompatActivity() {
         button = findViewById(R.id.Login)
         rem = findViewById(R.id.Remember)
         badlogin = findViewById(R.id.badLogin)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
 
         if(rememberPref){
@@ -48,6 +50,8 @@ class LoginScreen : AppCompatActivity() {
         button.setOnClickListener {
             val UserN = sharedPref.getString("userKey", "")
             val PassW = sharedPref.getString("passKey", "")
+            println(UserN)
+            println(PassW)
             if (user.getText().toString() == UserN && pass.getText().toString() == PassW) {
 
                 if (remember) {

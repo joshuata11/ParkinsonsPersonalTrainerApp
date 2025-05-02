@@ -34,12 +34,7 @@ class MainActivity : AppCompatActivity() {
         val darkmode = sharedPreferences.getBoolean("dark", false)
         println("Executing on create in main")
 
-       if(darkmode){
-           AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         //checkBLEPermission()
 
@@ -69,10 +64,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         BLEScanner().disconnectGattServer()
-    }
+    }*/
 
 
 

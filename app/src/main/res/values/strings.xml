@@ -9,4 +9,8 @@
     <string name="login">Login</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lsvt_description">LSVT BIG® is a specialized exercise program designed to help individuals with Parkinson’s disease improve their mobility, balance, and overall movement. By using exaggerated, high-amplitude motions, it retrains the brain and body to overcome the small, slow movements often caused by Parkinson’s. Regular sessions can enhance walking, reduce fall risk, increase confidence in daily tasks, and support greater independence. With consistent practice, LSVT BIG® can significantly boost quality of life and functional ability.</string>
+    <string name="biking_description">Biking can be highly beneficial for people with Parkinson’s disease by improving motor function, balance, and overall mobility. Regular cycling promotes neuroplasticity, helping the brain form new connections that support movement control. It also reduces muscle stiffness and slowness, two major symptoms of Parkinson’s, while boosting cardiovascular health and mood through increased dopamine release.</string>
+    <string name="resting_description">Rest is very important for people with Parkinson’s disease because it helps the body and brain recover from daily physical and mental stress. Quality rest can reduce fatigue, improve mood, and support better motor control by giving muscles time to relax and repair.</string>
+
 </resources>

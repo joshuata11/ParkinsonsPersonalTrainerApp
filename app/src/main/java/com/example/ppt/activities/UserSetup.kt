@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.ppt.R
 
 class UserSetup : AppCompatActivity() {
@@ -23,6 +24,8 @@ class UserSetup : AppCompatActivity() {
         pass = findViewById(R.id.Password)
         user = findViewById(R.id.Username)
         button = findViewById(R.id.Button)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         button.setOnClickListener {
             if (user.getText().toString().isNotEmpty() && pass.getText().toString().isNotEmpty()) {

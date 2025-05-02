@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.example.ppt.PrefObject
 import com.example.ppt.R
 
 /**
@@ -23,6 +25,7 @@ class Workout : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context?.let{PrefObject.init(it)}
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -38,6 +41,7 @@ class Workout : Fragment() {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_workout, container, false)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         val walkingbtn = view.findViewById<ImageButton>(R.id.Walkingbtn)
 
@@ -47,19 +51,25 @@ class Workout : Fragment() {
 
         val restingbtn = view.findViewById<ImageButton>(R.id.restingbtn)
 
-        val scrollingFragment = WalkingFragment()
+
 
         walkingbtn.setOnClickListener{
-            switchFragment(scrollingFragment)
+            PrefObject.setActivity("Walking")
+            switchFragment(WalkingFragment())
         }
         bikingbtn.setOnClickListener{
-            switchFragment(scrollingFragment)
+            PrefObject.setActivity("Biking")
+            switchFragment(BikingFragment())
         }
         lsvtbtn.setOnClickListener{
-            switchFragment(scrollingFragment)
+            println("LSVT BTN CLICKED")
+            PrefObject.setActivity("LSVT")
+            switchFragment(LSVTFragment())
         }
         restingbtn.setOnClickListener{
-            switchFragment(scrollingFragment)
+            println("RESTING BTN CLICKED")
+            PrefObject.setActivity("Resting")
+            switchFragment(RestingFragment())
         }
         return view
 
