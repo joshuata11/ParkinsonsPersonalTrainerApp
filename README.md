@@ -1,4 +1,4 @@
-####### INSTALLATION 
+# INSTALLATION 
 
 In order to install the app to your phone there are a few steps you need to take
 
@@ -14,7 +14,7 @@ In order to install the app to your phone there are a few steps you need to take
 5. You should then hit the run button and the app will download to your phone
 
 
-####### APP USE
+# APP USE
 
 1. When first opening the app you will be prompted to create an account, enter your login information and the create an account
 
@@ -33,7 +33,7 @@ In order to install the app to your phone there are a few steps you need to take
 8. When you uncheck the check box the file will be saved into your phones internal storage located in Download/mySensorData
 
 
-##LOGIN SYSTEM
+# LOGIN SYSTEM
 
 If you forget your login information you can just open the app info on your device and clear the storage and the cache, this will prompt you to make a new account.
 
