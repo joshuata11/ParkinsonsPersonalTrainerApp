@@ -41,4 +41,10 @@ Currently the app does not have a proper "Account System" VIA a database, the ac
 
 An actual account system should be created in future development 
 
+
+#UI ELEMENTS
+
+For some reason the UI for the app in not consistent across Android devices If you find that everything is not centered on your device just adjust the elements in the pages that arent centered.
+
+To do this go to res/layouts and click on the layout that is not centered, you should then be able to move each element to your specificaitons. This should be researched in the future to make sure its consistent across devices.
    
